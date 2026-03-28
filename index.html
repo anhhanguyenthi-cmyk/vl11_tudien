@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ai là triệu phú - Tụ điện Vật lí 11</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Cấu hình MathJax trước khi load script -->
     <script>
         window.MathJax = {
             tex: {
@@ -65,17 +64,32 @@
         .milestone-20 { color: #e74c3c; font-weight: bold; }
 
         .hidden-screen { display: none; }
-        .modal-overlay { background: rgba(0,0,0,0.85); position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .modal-overlay { background: rgba(0,0,0,0.9); position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; }
         
         canvas#fireworks { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 100; }
         
         .timer-warning { color: #e74c3c; animation: blink 1s infinite; }
         @keyframes blink { 50% { opacity: 0.5; } }
-
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #1a2a6c; }
         ::-webkit-scrollbar-thumb { background: #f1c40f; border-radius: 10px; }
+
+        /* Milestone Card Styles */
+        .milestone-card {
+            background: white;
+            color: black;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            max-width: 550px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            border: 6px solid transparent;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .milestone-card.level-5 { border-color: #f1c40f; background: linear-gradient(to bottom, #ffffff, #fff9db); }
+        .milestone-card.level-10 { border-color: #2ecc71; background: linear-gradient(to bottom, #ffffff, #e3fafc); }
     </style>
 </head>
 <body class="p-2">
@@ -86,6 +100,7 @@
     <div id="game-header" class="max-w-4xl mx-auto flex justify-between items-center bg-black/40 p-2 rounded-lg mb-2 hidden-screen">
         <div class="text-sm">
             <span id="display-info" class="font-bold"></span>
+            <span id="display-mode" class="ml-2 px-2 py-0.5 rounded text-[10px] uppercase font-bold"></span>
         </div>
         <div id="timer" class="text-xl font-bold text-yellow-400">180s</div>
         <div class="flex gap-2">
@@ -95,25 +110,27 @@
         </div>
     </div>
 
-    <!-- Main Container -->
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row gap-4">
-        
-        <!-- Left Side: Game Area -->
         <div id="main-area" class="flex-grow">
-            
             <!-- Login Screen -->
-            <div id="screen-login" class="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-2xl text-center border border-white/20 mt-10">
-                <h1 class="text-3xl font-bold mb-6 text-yellow-400 uppercase tracking-widest">Ai là triệu phú - Vật lí 11</h1>
-                <p class="mb-6 italic">Chủ đề: Tụ điện</p>
-                <div class="grid grid-cols-1 gap-4 max-w-md mx-auto mb-6">
+            <div id="screen-login" class="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl shadow-2xl text-center border border-white/20 mt-4 md:mt-10">
+                <h1 class="text-3xl font-bold mb-4 text-yellow-400 uppercase tracking-widest">Ai là triệu phú - Vật lí 11</h1>
+                <p class="mb-4 italic">Chủ đề: Tụ điện</p>
+                <div class="grid grid-cols-1 gap-3 max-w-md mx-auto mb-6">
                     <input type="text" id="input-name" placeholder="Họ và tên" class="p-3 rounded bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-yellow-400">
                     <input type="text" id="input-sbd" placeholder="Số báo danh" class="p-3 rounded bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-yellow-400">
                     <input type="text" id="input-class" placeholder="Lớp" class="p-3 rounded bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-yellow-400">
                     <input type="text" id="input-school" placeholder="Trường THPT" class="p-3 rounded bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 </div>
-                <div class="flex justify-center gap-4">
-                    <button onclick="showRules()" class="bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-full font-bold uppercase transition">Thể lệ</button>
-                    <button onclick="startGame()" class="bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-3 rounded-full font-bold uppercase transition">Vào ngồi ghế nóng</button>
+                <div class="flex flex-col gap-4 items-center">
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <button onclick="showRules()" class="bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-full font-bold uppercase transition text-sm">Thể lệ</button>
+                        <button onclick="startGame('practice')" class="bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-full font-bold uppercase transition text-sm">Luyện tập</button>
+                        <button onclick="startGame('official')" class="bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-3 rounded-full font-bold uppercase transition text-sm">Vào ngồi ghế nóng</button>
+                    </div>
+                    <p id="cheat-warning" class="text-red-400 text-sm font-bold mt-2 opacity-0 transition-opacity duration-300">
+                        ⚠️ Chú ý: Nếu rời khỏi màn hình này ở chế độ Ghế Nóng, bạn phải dừng cuộc chơi!
+                    </p>
                 </div>
             </div>
 
@@ -122,16 +139,14 @@
                 <h2 class="text-2xl font-bold mb-4 text-center text-blue-800">THỂ LỆ TRÒ CHƠI AI LÀ TRIỆU PHÚ (PHIÊN BẢN GIÁO DỤC)</h2>
                 <div class="space-y-3 text-base leading-relaxed">
                     <p>Chào mừng các em đến với trò chơi <strong>“Ai là triệu phú – Vật lí 11: Tụ điện”</strong>.</p>
-                    <p>Người chơi sẽ lần lượt chinh phục 20 câu hỏi với độ khó tăng dần:</p>
+                    <p>Người chơi sẽ lần lượt chinh phục 20 câu hỏi về <strong>Tụ điện</strong> với độ khó tăng dần.</p>
+                    <p><strong>Cấu trúc bài thi:</strong></p>
                     <ul class="list-disc ml-6">
-                        <li>Câu 1 đến 5: mức độ nhận biết.</li>
-                        <li>Câu 6 đến 10: mức độ nhận biết, thông hiểu.</li>
-                        <li>Câu 11 đến 20: mức độ hiểu, vận dụng, sáng tạo.</li>
+                        <li>Câu 1 - 12: Trắc nghiệm 4 lựa chọn (MCQ).</li>
+                        <li>Câu 13 - 16: Trắc nghiệm Đúng/Sai (TF).</li>
+                        <li>Câu 17 - 20: Trắc nghiệm Trả lời ngắn (Tính toán).</li>
                     </ul>
-                    <p>Mỗi câu hỏi có tối đa <strong>180 giây</strong> để trả lời.</p>
-                    <p>Các em có 3 quyền trợ giúp: <strong>50:50</strong> (áp dụng từ câu 1-12), <strong>Hỏi ý kiến khán giả</strong>, <strong>Gọi điện cho người thân</strong>.</p>
-                    <p><strong>Các mốc quan trọng:</strong> Câu 5 (5đ), Câu 10 (7đ). Trả lời đúng câu 20 đạt 10đ.</p>
-                    <p><strong>Nếu trả lời sai:</strong> Trước câu 5: dừng cuộc chơi; Từ 6-10: về 5đ; Từ 11-20: về 7đ.</p>
+                    <p>Mỗi câu có tối đa <strong>180 giây</strong>. Sai trước câu 5: 0đ. Sai từ 6-10: về mốc 5đ. Sai từ 11-20: về mốc 7đ.</p>
                 </div>
                 <button onclick="backToHome()" class="mt-6 bg-red-600 text-white px-6 py-2 rounded-lg block mx-auto font-bold uppercase">Quay lại trang chủ</button>
             </div>
@@ -141,134 +156,177 @@
                 <div id="question-container" class="bg-black/40 p-6 rounded-xl border border-blue-500/30 mb-4">
                     <div id="question-text" class="text-2xl font-bold mb-6">Đang tải câu hỏi...</div>
                     <div id="lifeline-hint" class="hidden mb-4 p-3 bg-yellow-100 text-black rounded-lg border-l-4 border-yellow-600"></div>
-                    <div id="answers-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <!-- Answers here -->
-                    </div>
-                    <!-- True/False Area -->
-                    <div id="tf-area" class="hidden space-y-4">
-                        <!-- T/F rows here -->
-                    </div>
-                    <!-- Short Answer Area -->
+                    <div id="answers-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                    <div id="tf-area" class="hidden space-y-4"></div>
                     <div id="short-area" class="hidden space-y-4">
-                        <p class="text-sm text-yellow-300">Nhập kết quả không quá 4 kí tự, nếu là số thập phân, dùng dấu phẩy (,). Ví dụ: 2,5</p>
-                        <input type="text" id="short-input" maxlength="4" class="w-full p-3 rounded bg-white text-black text-center text-2xl font-bold">
+                        <p class="text-sm text-yellow-300 italic">Nhập kết quả không quá 4 kí tự. Nếu có phần thập phân thì ghi dấy phẩy (,), Ví dụ: 2,5 </p>
+                        <input type="text" id="short-input" maxlength="4" class="w-full p-3 rounded bg-white text-black text-center text-2xl font-bold outline-none">
                     </div>
                 </div>
                 <div class="flex justify-between items-center px-4">
                     <button id="btn-stop" onclick="stopGameManual()" class="hidden bg-gray-600 px-4 py-2 rounded hover:bg-gray-500">Dừng cuộc chơi</button>
-                    <div class="flex gap-4 ml-auto">
-                        <button id="btn-submit" onclick="submitAnswer()" class="bg-green-600 px-8 py-2 rounded-full font-bold hover:bg-green-500">Nộp bài</button>
-                    </div>
+                    <button id="btn-submit" onclick="submitAnswer()" class="bg-green-600 px-8 py-2 rounded-full font-bold hover:bg-green-500 ml-auto">Nộp bài</button>
                 </div>
             </div>
 
             <!-- Result Screen -->
             <div id="screen-result" class="hidden-screen bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-2xl text-center border border-white/20 mt-10">
-                <h2 class="text-4xl font-bold text-yellow-400 mb-4">CHÚC MỪNG!</h2>
+                <h2 id="result-title" class="text-4xl font-bold text-yellow-400 mb-4">KẾT QUẢ</h2>
                 <div id="result-text" class="text-xl mb-6"></div>
                 <div class="flex flex-wrap justify-center gap-4">
-                    <button onclick="showHistory()" class="bg-blue-600 px-6 py-2 rounded-full font-bold">Lịch sử làm bài</button>
+                    <button id="btn-history" onclick="showHistory()" class="bg-blue-600 px-6 py-2 rounded-full font-bold">Lịch sử làm bài</button>
                     <button onclick="restartGame()" class="bg-yellow-500 text-black px-6 py-2 rounded-full font-bold">Làm lại</button>
                 </div>
             </div>
 
             <!-- History Screen -->
-            <div id="screen-history" class="hidden-screen bg-white text-black p-6 rounded-2xl shadow-2xl mt-4 overflow-y-auto max-h-[80vh]">
-                <h2 class="text-2xl font-bold mb-4 text-center">LỊCH SỬ LÀM BÀI CHI TIẾT</h2>
-                <div id="history-content" class="space-y-6"></div>
-                <button onclick="closeHistory()" class="mt-6 bg-red-600 text-white px-6 py-2 rounded-lg block mx-auto">Đóng</button>
+            <div id="screen-history" class="hidden-screen bg-white text-black p-4 md:p-6 rounded-2xl shadow-2xl mt-4 overflow-y-auto max-h-[80vh]">
+                <h2 class="text-2xl font-bold mb-4 text-center sticky top-0 bg-white py-2 border-b">LỊCH SỬ LÀM BÀI CHI TIẾT</h2>
+                <div id="history-content" class="space-y-8 pb-10"></div>
+                <button onclick="closeHistory()" class="mt-6 bg-red-600 text-white px-6 py-2 rounded-lg block mx-auto font-bold uppercase sticky bottom-0 shadow-lg">Đóng lịch sử</button>
             </div>
-
         </div>
 
-        <!-- Right Side: Points Ladder -->
-        <div id="points-ladder" class="w-[80px] bg-black/60 p-2 rounded-lg flex flex-col-reverse justify-between hidden-screen border-l border-blue-500">
-            <!-- Points items injected here -->
-        </div>
-
+        <div id="points-ladder" class="w-[80px] bg-black/60 p-2 rounded-lg flex flex-col-reverse justify-between hidden-screen border-l border-blue-500"></div>
     </div>
 
-    <!-- Modal for Lifelines & Milestones -->
+    <!-- Global Modal (Milestones) -->
     <div id="global-modal" class="modal-overlay hidden">
-        <div class="bg-white text-black p-8 rounded-2xl max-w-md w-full text-center">
-            <h3 id="modal-title" class="text-xl font-bold mb-4"></h3>
-            <p id="modal-body" class="mb-6"></p>
-            <button onclick="closeModal()" id="modal-btn" class="bg-blue-600 text-white px-8 py-2 rounded-full font-bold uppercase"></button>
+        <div id="modal-card" class="milestone-card">
+            <h3 id="modal-title" class="text-2xl font-bold mb-4 uppercase text-blue-800"></h3>
+            <div id="modal-body" class="mb-6 text-lg leading-relaxed text-gray-700 font-medium"></div>
+            <button onclick="closeModal()" id="modal-btn" class="bg-blue-600 text-white px-10 py-3 rounded-full font-bold uppercase hover:bg-blue-700 transition transform hover:scale-105 shadow-lg"></button>
         </div>
     </div>
 
-    <!-- Footer -->
-    <div class="fixed bottom-0 left-0 w-full bg-black/50 text-[12px] p-1 text-center italic">
+    <div class="fixed bottom-0 left-0 w-full bg-black/50 text-[12px] p-1 text-center italic z-50">
         Bản quyền thuộc về thạc sĩ Nguyễn Thị Ánh Hà, THPT Nguyễn Trường Tộ, Thành phố Huế
     </div>
 
     <script>
-        // --- DATA & CONFIG ---
-        const API_KEY = "";
-        const pointsConfig = [
-            0.5, 1.0, 1.5, 2.0, 5.0, 
-            5.5, 6.0, 6.5, 6.8, 7.0,
-            7.3, 7.6, 7.9, 8.2, 8.5,
-            8.8, 9.1, 9.4, 9.7, 10.0
-        ];
+        const pointsConfig = [0.5, 1.0, 1.5, 2.0, 5.0, 5.5, 6.0, 6.5, 6.8, 7.0, 7.3, 7.6, 7.9, 8.2, 8.5, 8.8, 9.1, 9.4, 9.7, 10.0];
 
-        // 40 Question Bank
         const questionBank = {
             mcq: [
-                { q: "Tụ điện là hệ thống gồm hai vật dẫn đặt gần nhau và ngăn cách nhau bởi", a: ["một lớp điện môi.", "một lớp kim loại.", "một dây dẫn.", "không khí hoàn toàn."], c: 0, exp: "Theo định nghĩa, tụ điện gồm 2 vật dẫn cách nhau bởi lớp điện môi để tích điện.", level: "biết", hint: "Lớp ở giữa hai bản tụ phải là lớp cách điện." },
-                { q: "Đơn vị của điện dung trong hệ SI là", a: ["Fara (F).", "Vôn (V).", "Culông (C).", "Ampe (A).",], c: 0, exp: "Đơn vị đo khả năng tích điện của tụ (điện dung) là Fara.", level: "biết", hint: "Đơn vị này được đặt theo tên nhà bác học Michael Faraday." },
-                { q: "Công thức liên hệ giữa điện tích $Q$, điện dung $C$ và hiệu điện thế $U$ của tụ điện là", a: ["$Q = C.U$.", "$Q = C/U$.", "$U = C.Q$.", "$C = Q.U$."], c: 0, exp: "Điện tích tỉ lệ thuận với hiệu điện thế qua hằng số điện dung C.", level: "biết", hint: "Q bằng tích của C và U." },
-                { q: "Khi tăng hiệu điện thế giữa hai bản tụ lên 2 lần thì điện dung của tụ sẽ", a: ["không đổi.", "tăng 2 lần.", "giảm 2 lần.", "tăng 4 lần."], c: 0, exp: "Điện dung C chỉ phụ thuộc cấu tạo tụ, không phụ thuộc U hay Q.", level: "hiểu", hint: "C là đặc tính cấu tạo của tụ điện." },
-                { q: "Năng lượng của tụ điện được tích trữ dưới dạng", a: ["năng lượng điện trường.", "năng lượng từ trường.", "nhiệt năng.", "hóa năng."], c: 0, exp: "Tụ điện tích lũy năng lượng trong điện trường giữa hai bản tụ.", level: "biết", hint: "Tụ điện tạo ra điện trường giữa hai bản." },
-                { q: "Kí hiệu của tụ điện trong sơ đồ mạch điện là", a: ["Hai vạch song song bằng nhau.", "Một vạch dài một vạch ngắn.", "Một vòng tròn có dấu X.", "Một đường ziczac."], c: 0, exp: "Hai vạch song song biểu diễn hai bản tụ.", level: "biết", hint: "Kí hiệu này mô phỏng hai bản phẳng song song." },
-                { q: "Đơn vị $1 \\mu F$ bằng", a: ["$10^{-6} F$.", "$10^{-9} F$.", "$10^{-3} F$.", "$10^{-12} F$."], c: 0, exp: "Micro có nghĩa là một phần triệu ($10^{-6}$).", level: "biết", hint: "Tiền tố micro tương ứng với lũy thừa mũ âm 6." },
-                { q: "Trên vỏ một tụ điện có ghi $20 \\mu F - 200 V$. Hiệu điện thế tối đa có thể đặt vào tụ là", a: ["$200 V$.", "$20 V$.", "$4000 V$.", "$100 V$."], c: 0, exp: "Giá trị điện áp ghi trên vỏ là giá trị cực đại cho phép để không đánh thủng lớp điện môi.", level: "hiểu", hint: "Con số đi kèm đơn vị Vôn chính là giới hạn điện áp." },
-                { q: "Nếu chọn gốc năng lượng tại lúc tụ chưa tích điện, công thức tính năng lượng $W$ của tụ là", a: ["$W = \\frac{1}{2}CU^2$.", "$W = CU^2$.", "$W = \\frac{1}{2}QU^2$.", "$W = \\frac{1}{2}C^2U$."], c: 0, exp: "Công thức chuẩn tính năng lượng điện trường trong tụ.", level: "biết", hint: "Công thức này có dạng tương tự động năng trong cơ học." },
-                { q: "Điện dung của tụ điện phẳng phụ thuộc vào yếu tố nào sau đây?", a: ["Khoảng cách giữa hai bản.", "Điện tích của tụ.", "Hiệu điện thế giữa hai bản.", "Bản chất kim loại làm bản tụ."], c: 0, exp: "C tỉ lệ nghịch với khoảng cách d.", level: "hiểu", hint: "Khoảng cách giữa hai bản càng gần thì khả năng tích điện càng lớn." },
-                { q: "Một tụ điện có điện dung $2 F$. Để tích cho tụ điện tích $4 C$ thì hiệu điện thế cần là", a: ["$2 V$.", "$8 V$.", "$0,5 V$.", "$4 V$."], c: 0, exp: "$U = Q/C = 4/2 = 2 V$.", level: "vận dụng", hint: "Lấy điện tích chia cho điện dung." },
-                { q: "Hiện tượng nào xảy ra khi điện trường giữa hai bản tụ quá lớn?", a: ["Lớp điện môi bị đánh thủng.", "Tụ tích thêm được nhiều điện.", "Tụ tự phát ra dòng điện.", "Tụ biến thành nguồn điện."], c: 0, exp: "Điện trường quá mạnh bứt electron làm lớp cách điện dẫn điện.", level: "hiểu", hint: "Lớp cách điện sẽ bị biến thành vật dẫn." },
-                { q: "Ghép hai tụ $C_1 = 2 \\mu F$ và $C_2 = 2 \\mu F$ song song thì điện dung bộ tụ là", a: ["$4 \\mu F$.", "$1 \\mu F$.", "$2 \\mu F$.", "$0 \\mu F$."], c: 0, exp: "Ghép song song $C_b = C_1 + C_2$.", level: "vận dụng", hint: "Khi ghép song song, các điện dung thành phần cộng lại với nhau." },
-                { q: "Đồ thị biểu diễn sự phụ thuộc của điện tích $Q$ vào hiệu điện thế $U$ của một tụ điện là", a: ["đường thẳng đi qua gốc tọa độ.", "đường hyperbol.", "đường parabol.", "đường thẳng song song trục $OU$."], c: 0, exp: "Vì $Q = CU$, Q tỉ lệ thuận với U nên đồ thị là đường thẳng.", level: "hiểu", hint: "Mối quan hệ bậc nhất giữa Q và U." },
-                { q: "Hai bản của tụ điện phẳng là", a: ["hai vật dẫn phẳng đặt song song.", "hai vật cách điện đặt song song.", "hai dây dẫn đặt song song.", "một vật dẫn và một vật cách điện."], c: 0, exp: "Định nghĩa cấu tạo tụ phẳng.", level: "biết", hint: "Hai bản phải dẫn điện và đặt song song nhau." },
-                { q: "Để tích điện cho tụ, người ta", a: ["nối hai bản tụ vào hai cực của nguồn điện.", "cọ xát hai bản tụ.", "đặt tụ gần một vật nhiễm điện.", "nhúng tụ vào dung dịch điện phân."], c: 0, exp: "Nguồn điện duy trì hiệu điện thế để dịch chuyển điện tích.", level: "biết", hint: "Cần một hiệu điện thế duy trì bởi nguồn." },
-                { q: "Đơn vị của hằng số điện môi $\\varepsilon$ là", a: ["không có đơn vị.", "Fara.", "Vôn.", "Culông."], c: 0, exp: "Hằng số điện môi là đại lượng không đơn vị.", level: "hiểu", hint: "Đây là một hệ số tỉ lệ so với chân không." },
-                { q: "Năng lượng điện trường trong tụ điện tỉ lệ với", a: ["bình phương hiệu điện thế.", "hiệu điện thế.", "căn bậc hai hiệu điện thế.", "nghịch đảo hiệu điện thế."], c: 0, exp: "Dựa vào công thức $W = 1/2 CU^2$.", level: "hiểu", hint: "Hãy nhìn vào số mũ của U trong công thức năng lượng." },
-                { q: "Đặc điểm của điện trường trong lòng tụ điện phẳng là", a: ["điện trường đều.", "điện trường xoáy.", "điện trường không đều.", "điện trường biến thiên."], c: 0, exp: "Giữa hai bản phẳng song song là điện trường đều.", level: "biết", hint: "Các đường sức điện là những đường thẳng song song cách đều." },
-                { q: "Một tụ điện $C=5 \\mu F$ được tích điện ở hiệu điện thế $10 V$. Năng lượng của tụ là", a: ["$250 \\mu J$.", "$50 \\mu J$.", "$25 \\mu J$.", "$500 \\mu J$."], c: 0, exp: "$W = 0,5 \\times 5.10^{-6} \\times 10^2 = 250.10^{-6} J$.", level: "vận dụng", hint: "Tính $0,5 \times C \times U^2$." },
-                { q: "Khi nhúng tụ điện phẳng vào chất lỏng có $\\varepsilon = 2$ thì điện dung của nó", a: ["tăng 2 lần.", "giảm 2 lần.", "không đổi.", "tăng 4 lần."], c: 0, exp: "$C = \\varepsilon C_0$.", level: "hiểu", hint: "Điện dung tỉ lệ thuận với hằng số điện môi." },
-                { q: "Đơn vị $1 nF$ (nanofara) bằng", a: ["$10^{-9} F$.", "$10^{-6} F$.", "$10^{-12} F$.", "$10^{-3} F$."], c: 0, exp: "Nano là $10^{-9}$.", level: "biết", hint: "Nano nhỏ hơn micro 1000 lần." },
-                { q: "Trong các thiết bị sau, thiết bị nào thường xuyên sử dụng tụ điện?", a: ["Mạch lọc nguồn điện.", "Bàn là nhiệt.", "Bóng đèn sợi đốt.", "Bếp từ."], c: 0, exp: "Tụ điện dùng để lọc nhiễu, tích năng lượng trong mạch điện tử.", level: "vận dụng", hint: "Tụ điện rất quan trọng trong các mạch xử lý nguồn." },
-                { q: "Muốn tăng điện dung của tụ điện phẳng, ta có thể", a: ["giảm khoảng cách giữa hai bản.", "tăng hiệu điện thế.", "giảm diện tích đối diện giữa hai bản.", "thay đổi bản chất kim loại bản tụ."], c: 0, exp: "C tỉ lệ nghịch với d.", level: "hiểu", hint: "Thu hẹp khoảng cách giữa hai bản tụ." }
+                { q: "Tụ điện là hệ thống gồm hai vật dẫn đặt gần nhau và ngăn cách nhau bởi", a: ["một lớp điện môi.", "một lớp kim loại.", "một dây dẫn.", "không khí hoàn toàn."], c: 0, exp: "Theo định nghĩa, tụ điện gồm hai vật dẫn cách nhau bởi một lớp cách điện (điện môi).", hint: "Vật ở giữa phải cách điện." },
+                { q: "Đơn vị của điện dung trong hệ SI là", a: ["Fara (F).", "Vôn (V).", "Culông (C).", "Ampe (A)."], c: 0, exp: "Đơn vị đo điện dung là Fara (F).", hint: "Tên nhà bác học Faraday." },
+                { q: "Công thức liên hệ $Q, C, U$ là", a: ["$Q = C.U$.", "$Q = C/U$.", "$U = C.Q$.", "$C = Q.U$."], c: 0, exp: "Điện tích tỉ lệ thuận với hiệu điện thế qua hằng số điện dung: $Q = CU$.", hint: "Q = C nhân U." },
+                { q: "Năng lượng tụ điện tích trữ dưới dạng", a: ["điện trường.", "từ trường.", "nhiệt năng.", "hóa năng."], c: 0, exp: "Tụ điện tích trữ năng lượng trong không gian giữa hai bản dưới dạng điện trường.", hint: "Giữa hai bản tụ có điện trường." },
+                { q: "Kí hiệu tụ điện trong mạch là", a: ["Hai vạch song song bằng nhau.", "Vạch dài vạch ngắn.", "Vòng tròn có X.", "Ziczac."], c: 0, exp: "Hai vạch song song có độ dài bằng nhau biểu thị hai bản cực của tụ.", hint: "Mô tả cấu tạo tụ phẳng." },
+                { q: "Đơn vị $1 \\mu F$ bằng", a: ["$10^{-6} F$.", "$10^{-9} F$.", "$10^{-3} F$.", "$10^{-12} F$."], c: 0, exp: "Micro có nghĩa là một phần triệu ($10^{-6}$).", hint: "Một phần triệu." },
+                { q: "Trên tụ ghi $20 \\mu F - 200 V$. $200 V$ là", a: ["Hiệu điện thế tối đa.", "Hiệu điện thế trung bình.", "Hiệu điện thế hiệu dụng.", "Hiệu điện thế làm việc thấp nhất."], c: 0, exp: "Điện áp ghi trên vỏ là giới hạn tối đa để tụ không bị đánh thủng.", hint: "Giới hạn an toàn." },
+                { q: "Điện dung tụ phẳng phụ thuộc vào", a: ["Khoảng cách giữa hai bản.", "Điện tích.", "Hiệu điện thế.", "Bản chất kim loại."], c: 0, exp: "Theo công thức $C = \\frac{\\varepsilon S}{k 4\\pi d}$, C tỉ lệ nghịch với d.", hint: "Cấu trúc hình học của tụ." },
+                { q: "Công thức năng lượng tụ điện là", a: ["$W = 1/2 CU^2$.", "$W = CU^2$.", "$W = 1/2 QU^2$.", "$W = 1/2 C^2U$."], c: 0, exp: "Năng lượng điện trường tỉ lệ với bình phương hiệu điện thế.", hint: "Giống công thức động năng." },
+                { q: "Khi tăng U lên 2 lần thì C của tụ sẽ", a: ["Không đổi.", "Tăng 2 lần.", "Giảm 2 lần.", "Tăng 4 lần."], c: 0, exp: "Điện dung C chỉ phụ thuộc cấu tạo tụ, không phụ thuộc U hay Q.", hint: "C là đặc tính riêng của tụ." },
+                { q: "Đơn vị $1 nF$ bằng", a: ["$10^{-9} F$.", "$10^{-6} F$.", "$10^{-12} F$.", "$10^{-3} F$."], c: 0, exp: "Nano là $10^{-9}$.", hint: "Nhỏ hơn micro 1000 lần." },
+                { q: "Ghép song song 2 tụ $2 \\mu F$ và $3 \\mu F$ được bộ tụ có điện dung", a: ["$5 \\mu F$.", "$1,2 \\mu F$.", "$1 \\mu F$.", "$6 \\mu F$."], c: 0, exp: "Ghép song song: $C_b = C_1 + C_2$.", hint: "C_song_song = C1 + C2." },
+                { q: "Nếu nhúng tụ phẳng vào dầu ($\\varepsilon = 2$) thì điện dung C sẽ", a: ["Tăng 2 lần.", "Giảm 2 lần.", "Không đổi.", "Tăng 4 lần."], c: 0, exp: "Điện dung tỉ lệ thuận với hằng số điện môi.", hint: "Hằng số điện môi làm tăng khả năng tích điện." },
+                { q: "Đồ thị $Q(U)$ của một tụ điện nhất định là", a: ["Đường thẳng qua gốc tọa độ.", "Đường cong parabol.", "Đường thẳng song song trục U.", "Đường hyperbol."], c: 0, exp: "Q = CU là hàm số bậc nhất nên đồ thị là đường thẳng qua gốc tọa độ.", hint: "Q tỉ lệ thuận với U." },
+                { q: "Hai bản tụ điện phẳng khi được tích điện thì tích điện", a: ["Trái dấu, cùng độ lớn.", "Cùng dấu, cùng độ lớn.", "Trái dấu, khác độ lớn.", "Cùng dấu, khác độ lớn."], c: 0, exp: "Do hiện tượng cảm ứng, hai bản tụ tích điện trái dấu và cùng độ lớn.", hint: "Tổng điện tích bộ tụ bằng 0." },
+                { q: "Tụ điện ngăn dòng điện nào sau đây?", a: ["Dòng một chiều.", "Dòng xoay chiều.", "Dòng biến thiên.", "Dòng cao tần."], c: 0, exp: "Lớp điện môi ngăn cản dòng điện không đổi đi qua.", hint: "Dòng điện không đổi không đi qua được." },
+                { q: "Đơn vị của hằng số điện môi $\\varepsilon$ là", a: ["Không có đơn vị.", "Fara.", "Culông.", "Vôn."], c: 0, exp: "Hằng số điện môi là đại lượng không có đơn vị (không thứ nguyên).", hint: "Nó là một con số so sánh." },
+                { q: "Để tích điện cho tụ ta nối hai bản tụ với", a: ["Nguồn điện.", "Sợi dây dẫn.", "Vật nhiễm điện.", "Bếp điện."], c: 0, exp: "Nguồn điện tạo hiệu điện thế để dịch chuyển điện tích đến các bản.", hint: "Cần lực đẩy electron." },
+                { q: "Thiết bị nào sau đây thường dùng tụ điện để lọc nhiễu?", a: ["Mạch nguồn máy tính.", "Bàn là điện.", "Bóng đèn sợi đốt.", "Bếp từ."], c: 0, exp: "Tụ điện có tính năng nạp xả nên dùng để lọc các dao động điện áp.", hint: "Tụ dùng tích năng lượng nhanh hoặc lọc nhiễu." },
+                { q: "Khi khoảng cách d giảm 2 lần thì điện dung C của tụ phẳng", a: ["Tăng 2 lần.", "Giảm 2 lần.", "Tăng 4 lần.", "Không đổi."], c: 0, exp: "Điện dung tỉ lệ nghịch với khoảng cách d giữa hai bản.", hint: "Gần nhau hơn thì hút điện mạnh hơn." },
+                { q: "Đơn vị $1 pF$ bằng", a: ["$10^{-12} F$.", "$10^{-9} F$.", "$10^{-6} F$.", "$10^{-15} F$."], c: 0, exp: "Pico là $10^{-12}$.", hint: "Đơn vị rất nhỏ." },
+                { q: "Công thức tính điện dung C của tụ phẳng là", a: ["$C = \\frac{\\varepsilon S}{9.10^9 4\\pi d}$.", "$C = U/Q$.", "$C = \\frac{\\varepsilon d}{k 4\\pi S}$.", "$C = S / d$."], c: 0, exp: "Đây là công thức thực nghiệm tính điện dung tụ phẳng.", hint: "Phụ thuộc S, d và điện môi." },
+                { q: "Một tụ có $C=100 \\mu F$ tích điện $0,1 C$ thì hiệu điện thế U là", a: ["$1000 V$.", "$10 V$.", "$100 V$.", "$10000 V$."], c: 0, exp: "$U = Q/C = 0,1 / 10^{-4} = 1000 V$.", hint: "Chia 0,1 cho 0,0001." },
+                { q: "Hành động nào sau đây làm tăng năng lượng tích trữ của tụ?", a: ["Tăng hiệu điện thế U.", "Rút tụ khỏi nguồn.", "Giảm điện dung C.", "Tăng khoảng cách d."], c: 0, exp: "$W = 1/2 CU^2$, tăng U sẽ tăng W.", hint: "Năng lượng tỉ lệ với bình phương U." }
             ],
             tf: [
                 {
-                    lead: "Xét một tụ điện phẳng có điện dung $C$ được nối với một nguồn điện có hiệu điện thế $U$ không đổi.",
+                    lead: "Một tụ điện phẳng được nối vào nguồn điện một chiều không đổi có hiệu điện thế U.",
                     items: [
-                        { text: "Điện tích của tụ điện tỉ lệ thuận với hiệu điện thế $U$.", c: true, exp: "$Q = CU$." },
-                        { text: "Nếu tăng diện tích đối diện của hai bản tụ thì điện dung $C$ giảm.", c: false, exp: "$C$ tỉ lệ thuận với diện tích $S$." },
-                        { text: "Năng lượng điện trường tỉ lệ với bình phương điện tích của tụ.", c: true, exp: "$W = Q^2/(2C)$." },
-                        { text: "Nếu rút tụ ra khỏi nguồn rồi tăng khoảng cách hai bản thì hiệu điện thế $U$ không đổi.", c: false, exp: "Khi rút nguồn, $Q$ không đổi, $d$ tăng $\\rightarrow C$ giảm $\\rightarrow U$ tăng." }
+                        { text: "Nếu tăng diện tích đối diện của hai bản tụ thì điện tích của tụ sẽ tăng.", c: true, exp: "Đúng, vì $C$ tăng nên $Q = CU$ tăng ($U$ không đổi)." },
+                        { text: "Điện dung của tụ điện phụ thuộc vào điện tích mà tụ tích được.", c: false, exp: "Sai, điện dung chỉ phụ thuộc vào cấu tạo của tụ." },
+                        { text: "Năng lượng tích trữ trong tụ điện là năng lượng của điện trường.", c: true, exp: "Đúng, tụ điện tích trữ năng lượng dưới dạng điện trường đều." },
+                        { text: "Khi hiệu điện thế U tăng gấp đôi thì năng lượng tích trữ tăng gấp đôi.", c: false, exp: "Sai, năng lượng tỉ lệ với $U^2$ nên sẽ tăng gấp 4 lần." }
                     ],
-                    hint: "Nhớ công thức $C = \varepsilon \varepsilon_0 S / d$. Khi nối với nguồn thì $U$ không đổi, khi rút khỏi nguồn thì $Q$ không đổi."
+                    hint: "Liên hệ $Q=CU$ và $W=1/2 CU^2$."
                 },
                 {
-                    lead: "Một tụ điện có ghi $470 \\mu F - 25 V$. Một học sinh tiến hành thí nghiệm tích điện cho tụ.",
+                    lead: "Trên vỏ một tụ điện có ghi $470 \\mu F - 25 V$.",
                     items: [
-                        { text: "Giá trị $470 \\mu F$ là điện dung định mức của tụ.", c: true, exp: "Đây là thông số kỹ thuật cơ bản." },
-                        { text: "Học sinh có thể nối tụ vào nguồn điện $30 V$ mà không lo hỏng tụ.", c: false, exp: "Vượt quá điện áp định mức ($25V$) tụ sẽ hỏng." },
-                        { text: "Điện tích tối đa tụ tích được là $11,75 mC$.", c: true, exp: "$Q = 470.10^{-6} \\times 25 = 0,01175 C = 11,75 mC$." },
-                        { text: "Khi tụ đã tích đầy điện, dòng điện qua tụ là vô cùng lớn.", c: false, exp: "Tụ điện ngăn dòng một chiều khi đã tích đầy." }
+                        { text: "Hiệu điện thế tối đa tụ có thể chịu được là $25 V$.", c: true, exp: "Đúng, đó là hiệu điện thế định mức." },
+                        { text: "Điện tích cực đại mà tụ có thể tích được là $11,75 mC$.", c: true, exp: "Đúng, $Q = 470.10^{-6} \\times 25 = 0,01175 C = 11,75 mC$." },
+                        { text: "Năng lượng tối đa tụ có thể tích trữ là khoảng $0,15 J$.", c: true, exp: "Đúng, $W = 0,5 \\times 470.10^{-6} \\times 25^2 \\approx 0,147 J$." },
+                        { text: "Nếu nối tụ vào nguồn $50 V$, tụ sẽ tích được nhiều điện hơn và bền hơn.", c: false, exp: "Sai, nối quá áp tụ sẽ bị đánh thủng và hỏng." }
                     ],
-                    hint: "Điện áp ghi trên tụ là giới hạn tối đa. Công thức tính điện tích là $Q = C \cdot U$."
+                    hint: "Các thông số ghi trên vỏ là giá trị định mức."
+                },
+                {
+                    lead: "Xét một tụ điện phẳng có điện môi là không khí.",
+                    items: [
+                        { text: "Nếu thay không khí bằng một tấm thủy tinh, điện dung sẽ tăng.", c: true, exp: "Đúng, vì $\\varepsilon_{glass} > \\varepsilon_{air} = 1$." },
+                        { text: "Nếu tăng khoảng cách giữa hai bản tụ, điện dung sẽ tăng.", c: false, exp: "Sai, C tỉ lệ nghịch với d nên d tăng thì C giảm." },
+                        { text: "Điện trường trong lòng tụ điện là điện trường đều.", c: true, exp: "Đúng, vì hai bản là các mặt phẳng song song cách đều." },
+                        { text: "Công thức tính điện tích của tụ điện là $Q = C/U$.", c: false, exp: "Sai, công thức đúng là $Q = CU$." }
+                    ],
+                    hint: "Công thức cấu tạo tụ phẳng: $C = \\frac{\\varepsilon S}{k 4\\pi d}$."
+                },
+                {
+                    lead: "Về các đặc điểm vật lí của tụ điện.",
+                    items: [
+                        { text: "Đơn vị của năng lượng tích trữ trong tụ điện là Fara.", c: false, exp: "Sai, đơn vị năng lượng là Jun (J)." },
+                        { text: "Hai bản tụ luôn tích điện có cùng dấu.", c: false, exp: "Sai, hai bản tích điện trái dấu." },
+                        { text: "Tụ điện có thể được sử dụng trong các mạch đèn flash máy ảnh.", c: true, exp: "Đúng, nhờ khả năng phóng điện cực nhanh tạo công suất lớn." },
+                        { text: "Điện tích trên các bản tụ tỉ lệ thuận với hiệu điện thế đặt vào.", c: true, exp: "Đúng, theo công thức $Q = CU$." }
+                    ],
+                    hint: "Tụ điện nạp năng lượng từ nguồn và giải phóng nhanh chóng."
+                },
+                {
+                    lead: "Ghép tụ điện nối tiếp và song song.",
+                    items: [
+                        { text: "Ghép song song để tăng điện dung cho bộ tụ.", c: true, exp: "Đúng, $C_p = C_1 + C_2$." },
+                        { text: "Ghép nối tiếp thì hiệu điện thế của bộ tụ bằng hiệu điện thế mỗi tụ.", c: false, exp: "Sai, ghép nối tiếp $U_b = U_1 + U_2$." },
+                        { text: "Ghép nối tiếp làm giảm điện dung của bộ tụ.", c: true, exp: "Đúng, $1/C_{nt} = 1/C_1 + 1/C_2$." },
+                        { text: "Ghép song song làm tăng hiệu điện thế chịu đựng của bộ tụ.", c: false, exp: "Sai, ghép song song hiệu điện thế chịu đựng bằng giá trị thấp nhất của tụ thành phần." }
+                    ],
+                    hint: "Ghi nhớ quy tắc ghép tụ điện."
+                },
+                {
+                    lead: "Năng lượng điện trường trong tụ.",
+                    items: [
+                        { text: "Khi tụ phóng điện qua một điện trở, năng lượng điện trường chuyển hóa thành nhiệt năng.", c: true, exp: "Đúng, theo định luật Joule-Lenz." },
+                        { text: "Có thể tích điện cho tụ mà không cần nguồn điện.", c: false, exp: "Sai, cần hiệu điện thế để tách điện tích." },
+                        { text: "Năng lượng tích trữ tỉ lệ với điện dung của tụ.", c: true, exp: "Đúng, $W = 0,5 CU^2$." },
+                        { text: "Đơn vị microfara ($\\mu F$) lớn hơn đơn vị nanofara ($nF$).", c: true, exp: "Đúng, $1 \\mu F = 1000 nF$." }
+                    ],
+                    hint: "Sự chuyển hóa năng lượng khi nạp/xả tụ."
+                },
+                {
+                    lead: "Tính chất nạp và xả của tụ điện.",
+                    items: [
+                        { text: "Tụ điện xả điện qua vật dẫn nối hai bản.", c: true, exp: "Đúng, dòng điện xả chạy từ bản dương sang bản âm." },
+                        { text: "Khi tụ được nạp đầy, hiệu điện thế giữa hai bản bằng hiệu điện thế nguồn.", c: true, exp: "Đúng, lúc này dòng nạp dừng lại." },
+                        { text: "Điện môi trong tụ điện cho phép dòng electron chạy qua liên tục.", c: false, exp: "Sai, điện môi là chất cách điện." },
+                        { text: "Tụ điện dùng để biến đổi dòng điện một chiều thành dòng xoay chiều.", c: false, exp: "Sai, đó là chức năng của bộ nghịch lưu (inverter)." }
+                    ],
+                    hint: "Tụ điện là linh kiện thụ động tích trữ năng lượng."
+                },
+                {
+                    lead: "Công của lực điện trường khi nạp điện cho tụ.",
+                    items: [
+                        { text: "Công của nguồn điện tỉ lệ thuận với hiệu điện thế nguồn.", c: true, exp: "Đúng, $A = QU$." },
+                        { text: "Toàn bộ công của nguồn điện được chuyển thành năng lượng tụ.", c: false, exp: "Sai, một phần chuyển thành năng lượng tụ, một phần tỏa nhiệt trên dây dẫn." },
+                        { text: "Năng lượng điện trường được đo bằng đơn vị Culông.", c: false, exp: "Sai, năng lượng đo bằng Jun." },
+                        { text: "Hằng số điện môi của nước tinh khiết là khoảng 81.", c: true, exp: "Đúng, nước là môi trường có tính phân cực mạnh." }
+                    ],
+                    hint: "Hiệu suất nạp tụ không bao giờ đạt 100%."
                 }
             ],
             short: [
-                { q: "Một tụ điện có điện dung $10 \\mu F$. Khi hiệu điện thế giữa hai bản là $20 V$ thì điện tích của tụ là bao nhiêu mC? (Kết quả lấy 1 chữ số thập phân)", a: "0,2", exp: "$Q = CU = 10.10^{-6} \\times 20 = 2.10^{-4} C = 0,2 mC$.", hint: "Sử dụng công thức $Q = CU$. Lưu ý đổi đơn vị: $1 \mu F = 10^{-6} F$ và $1 C = 1000 mC$." },
-                { q: "Một nhóm học sinh nhận định về tụ điện như sau:\n1. 'Tụ điện dùng để tích và phóng điện'.\n2. 'Điện dung có đơn vị là Vôn'.\n3. 'Năng lượng tụ là năng lượng từ trường'.\n4. 'Đơn vị $1 pF = 10^{-12} F$'.\n5. 'Ghép song song các tụ để tăng điện dung'.\n6. 'Tụ điện cho dòng điện một chiều đi qua'.\n7. 'Điện dung không phụ thuộc vào hiệu điện thế'.\n8. 'Hằng số điện môi luôn nhỏ hơn 1'.\nChọn các nhận định ĐÚNG rồi ghi đáp án bằng một dãy số tăng dần từ nhỏ đến lớn.", a: "1457", exp: "Các nhận định đúng là 1, 4, 5, 7.", hint: "Rà soát lại định nghĩa đơn vị (Fara), tính chất ghép tụ ($C_p = C_1 + C_2$) và đặc điểm ngăn dòng một chiều của tụ." }
+                { q: "Tụ điện $C=10 \\mu F$ tích điện $Q=0,3 mC$. Tính hiệu điện thế giữa 2 bản tụ (Vôn)?", a: "30", exp: "$U = Q/C = 0,3.10^{-3} / 10.10^{-6} = 30 V$.", hint: "Sử dụng công thức $U = Q/C$." },
+                { q: "Năng lượng tụ là bao nhiêu mJ nếu $C=20 \\mu F$ và $U=10 V$?", a: "1", exp: "$W = 0,5 CU^2 = 0,5 \\times 20.10^{-6} \\times 100 = 10^{-3} J = 1 mJ$.", hint: "Sử dụng $W = 0,5 CU^2$." },
+                { q: "Một tụ điện phẳng trong không khí có $C=2 pF$. Nếu nhúng tụ vào dầu hỏa ($\\varepsilon = 2,1$) thì điện dung mới là bao nhiêu pF? (Lấy 1 chữ số thập phân)", a: "4,2", exp: "$C' = \\varepsilon C = 2,1 \\times 2 = 4,2 pF$.", hint: "Điện dung tăng $\\varepsilon$ lần." },
+                { q: "Điện tích của tụ điện $C=470 \\mu F$ khi nối vào nguồn $10 V$ là bao nhiêu mC? (Lấy 1 chữ số thập phân)", a: "4,7", exp: "$Q = CU = 470.10^{-6} \\times 10 = 4,7.10^{-3} C = 4,7 mC$.", hint: "Tính tích số $C \times U$." },
+                { q: "Một nhóm học sinh nhận định về tụ điện:\n1. 'Đơn vị là Fara'.\n2. 'Ngăn dòng một chiều'.\n3. 'Tích năng lượng từ trường'.\n4. 'Điện dung tỉ lệ thuận d'.\n5. 'Q tỉ lệ thuận U'.\n6. 'Ghép song song để tăng C'.\n7. 'Dùng để tỏa nhiệt'.\n8. '$\mu F = 10^{-9} F$'.\nChọn các câu ĐÚNG rồi ghi dãy số tăng dần.", a: "1256", exp: "Đúng: 1, 2, 5, 6. Sai: 3 (điện trường), 4 (nghịch d), 7 (tích điện), 8 ($\mu F = 10^{-6} F$).", hint: "Rà soát định nghĩa và tính chất cơ bản." },
+                { q: "Cần tích cho tụ $C=50 \\mu F$ một hiệu điện thế bao nhiêu Vôn để năng lượng đạt $1 mJ$?", a: "6,3", exp: "$U = \\sqrt{2W/C} = \\sqrt{2.10^{-3} / 50.10^{-6}} = \\sqrt{40} \\approx 6,32 V$. Làm tròn 6,3.", hint: "Rút U từ công thức năng lượng." },
+                { q: "Bộ tụ gồm 2 tụ $4 \\mu F$ ghép nối tiếp có điện dung bộ là bao nhiêu $\mu F$?", a: "2", exp: "$1/C_b = 1/4 + 1/4 = 1/2 \\rightarrow C_b = 2 \\mu F$.", hint: "Ghép nối tiếp tụ giống nhau thì C giảm nửa." },
+                { q: "Nhận định về ghép tụ:\n1. 'Nối tiếp Q khác nhau'.\n2. 'Song song U bằng nhau'.\n3. 'Nối tiếp tăng C'.\n4. 'Song song giảm C'.\n5. 'Nối tiếp tăng áp chịu đựng'.\n6. 'Cản trở dòng 1 chiều'.\n7. 'Tụ xoay thay đổi S'.\n8. 'Hằng số điện môi chân không bằng 0'.\nChọn các câu ĐÚNG rồi ghi dãy số tăng dần.", a: "2567", exp: "Đúng:  2, 5, 6, 7. Sai: 1 (bằng), 3 (giảm), 4 (tăng), 8 (bằng 1).", hint: "Kiểm tra kiến thức về ghép tụ và cấu tạo." }
             ]
         };
 
-        // --- GAME STATE ---
         let gameState = {
             user: { name: "", sbd: "", class: "", school: "" },
             currentLevel: 0,
@@ -279,59 +337,62 @@
             lifelines: { 5050: true, audience: true, phone: true },
             history: [],
             isGameOver: false,
-            tempSelections: []
+            tempSelections: [],
+            gameMode: 'practice'
         };
 
-        // Helper to trigger MathJax
         function renderMath() {
             if (window.MathJax && window.MathJax.typesetPromise) {
-                window.MathJax.typesetPromise().catch((err) => console.log('MathJax error:', err));
+                window.MathJax.typesetPromise().catch(e => console.error(e));
             }
         }
 
-        // Audio synthesizer
         const playSound = (type) => {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-
-            if (type === 'pingpong') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(880, ctx.currentTime);
-                gain.gain.setValueAtTime(0.1, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.2);
-            } else if (type === 'correct') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(523.25, ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(1046.5, ctx.currentTime + 0.5);
-                gain.gain.setValueAtTime(0.1, ctx.currentTime);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.5);
-            } else if (type === 'wrong') {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(220, ctx.currentTime);
-                osc.frequency.linearRampToValueAtTime(110, ctx.currentTime + 0.5);
-                gain.gain.setValueAtTime(0.1, ctx.currentTime);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.5);
-            }
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                if (type === 'pingpong') { osc.type = 'sine'; osc.frequency.setValueAtTime(880, ctx.currentTime); gain.gain.setValueAtTime(0.1, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2); osc.start(); osc.stop(ctx.currentTime + 0.2); }
+                else if (type === 'correct') { osc.type = 'triangle'; osc.frequency.setValueAtTime(523, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(1046, ctx.currentTime + 0.5); gain.gain.setValueAtTime(0.1, ctx.currentTime); osc.start(); osc.stop(ctx.currentTime + 0.5); }
+                else if (type === 'wrong') { osc.type = 'sawtooth'; osc.frequency.setValueAtTime(220, ctx.currentTime); osc.frequency.linearRampToValueAtTime(110, ctx.currentTime + 0.5); gain.gain.setValueAtTime(0.1, ctx.currentTime); osc.start(); osc.stop(ctx.currentTime + 0.5); }
+            } catch(e) {}
         };
 
-        // --- LOGIC ---
+        function setupAntiCheat() {
+            const check = () => { if (gameState.gameMode === 'official' && !gameState.isGameOver && document.hidden) endByCheat(); };
+            document.addEventListener('visibilitychange', check);
+            window.addEventListener('blur', () => { if(gameState.gameMode === 'official' && !gameState.isGameOver) setTimeout(() => { if(!document.hasFocus()) endByCheat(); }, 1000); });
+        }
+
+        function endByCheat() {
+            if(gameState.isGameOver) return;
+            gameState.isGameOver = true;
+            clearInterval(gameState.timerInterval);
+            playSound('wrong');
+            document.getElementById('screen-game').classList.add('hidden-screen');
+            document.getElementById('screen-result').classList.remove('hidden-screen');
+            document.getElementById('result-title').innerText = "VI PHẠM QUY CHẾ!";
+            document.getElementById('result-title').className = "text-4xl font-bold text-red-500 mb-4";
+            document.getElementById('result-text').innerHTML = `<span class="text-red-400 font-bold">Bạn đã vi phạm quy chế, không được rời khỏi màn hình này khi đang NGỒI GHẾ NÓNG.</span>`;
+            document.getElementById('btn-history').classList.add('hidden');
+        }
+
         function init() {
             const saved = localStorage.getItem('altp_user');
             if (saved) {
                 const u = JSON.parse(saved);
-                document.getElementById('input-name').value = u.name;
-                document.getElementById('input-sbd').value = u.sbd;
-                document.getElementById('input-class').value = u.class;
-                document.getElementById('input-school').value = u.school;
+                document.getElementById('input-name').value = u.name || "";
+                document.getElementById('input-sbd').value = u.sbd || "";
+                document.getElementById('input-class').value = u.class || "";
+                document.getElementById('input-school').value = u.school || "";
             }
             renderLadder();
+            setupAntiCheat();
+            const btnOff = document.querySelector('button[onclick*="official"]');
+            btnOff.onmouseenter = () => document.getElementById('cheat-warning').style.opacity = 1;
+            btnOff.onmouseleave = () => document.getElementById('cheat-warning').style.opacity = 0;
         }
 
         function renderLadder() {
@@ -346,61 +407,39 @@
             });
         }
 
-        function showRules() {
-            playSound('pingpong');
-            document.getElementById('screen-login').classList.add('hidden-screen');
-            document.getElementById('screen-rules').classList.remove('hidden-screen');
-        }
-
-        function backToHome() {
-            playSound('pingpong');
-            document.getElementById('screen-rules').classList.add('hidden-screen');
-            document.getElementById('screen-login').classList.remove('hidden-screen');
-        }
-
-        function startGame() {
+        function startGame(mode) {
             const name = document.getElementById('input-name').value;
             const sbd = document.getElementById('input-sbd').value;
-            const cls = document.getElementById('input-class').value;
-            const sch = document.getElementById('input-school').value;
-
-            if (!name || !sbd) {
-                alert("Vui lòng nhập đầy đủ Họ tên và SBD!");
-                return;
-            }
-
-            gameState.user = { name, sbd, class: cls, school: sch };
+            if (!name || !sbd) return alert("Vui lòng nhập Họ tên và SBD!");
+            gameState.user = { name, sbd, class: document.getElementById('input-class').value, school: document.getElementById('input-school').value };
             localStorage.setItem('altp_user', JSON.stringify(gameState.user));
-            
-            playSound('pingpong');
-            setupQuestions();
+            gameState.gameMode = mode;
             gameState.currentLevel = 0;
             gameState.isGameOver = false;
-            gameState.lifelines = { 5050: true, audience: true, phone: true };
             gameState.history = [];
+            gameState.lifelines = { 5050: true, audience: true, phone: true };
             
+            // Xáo trộn và lấy đủ 20 câu theo tỷ lệ 12 - 4 - 4
+            const mcqs = [...questionBank.mcq].sort(() => 0.5 - Math.random()).slice(0, 12).map(q => ({...q, type:'mcq'}));
+            const tfs = [...questionBank.tf].sort(() => 0.5 - Math.random()).slice(0, 4).map(q => ({...q, type:'tf'}));
+            const shorts = [...questionBank.short].sort(() => 0.5 - Math.random()).slice(0, 4).map(q => ({...q, type:'short'}));
+            gameState.questions = [...mcqs, ...tfs, ...shorts];
+
             document.getElementById('screen-login').classList.add('hidden-screen');
             document.getElementById('game-header').classList.remove('hidden-screen');
             document.getElementById('points-ladder').classList.remove('hidden-screen');
             document.getElementById('screen-game').classList.remove('hidden-screen');
             document.getElementById('screen-result').classList.add('hidden-screen');
-            
-            document.getElementById('display-info').innerText = `${name} - SBD: ${sbd} - ${cls}, ${sch}`;
+            document.getElementById('btn-history').classList.remove('hidden');
+            document.getElementById('result-title').className = "text-4xl font-bold text-yellow-400 mb-4";
+            document.getElementById('result-title').innerText = "KẾT QUẢ";
+
+            const badge = document.getElementById('display-mode');
+            badge.innerText = mode === 'official' ? 'Thi Đấu' : 'Luyện Tập';
+            badge.className = mode === 'official' ? 'ml-2 px-2 py-0.5 rounded text-[10px] uppercase font-bold bg-red-600' : 'ml-2 px-2 py-0.5 rounded text-[10px] uppercase font-bold bg-green-600';
+            document.getElementById('display-info').innerText = `${name} - SBD: ${sbd}`;
             
             loadQuestion();
-        }
-
-        function setupQuestions() {
-            const mcqs = [...questionBank.mcq].sort(() => 0.5 - Math.random()).slice(0, 12);
-            const tfs = [...questionBank.tf].sort(() => 0.5 - Math.random()).slice(0, 4);
-            const shorts = [...questionBank.short].sort(() => 0.5 - Math.random()).slice(0, 4);
-            
-            gameState.questions = [...mcqs, ...tfs, ...shorts];
-            gameState.questions.forEach((q, idx) => {
-                if (idx < 12) q.type = 'mcq';
-                else if (idx < 16) q.type = 'tf';
-                else q.type = 'short';
-            });
         }
 
         function loadQuestion() {
@@ -410,361 +449,208 @@
             startTimer();
 
             const q = gameState.questions[gameState.currentLevel];
-            const qContainer = document.getElementById('question-text');
-            const answersGrid = document.getElementById('answers-grid');
-            const tfArea = document.getElementById('tf-area');
-            const shortArea = document.getElementById('short-area');
-            const hintBox = document.getElementById('lifeline-hint');
-            const btnStop = document.getElementById('btn-stop');
-
-            qContainer.innerHTML = `Câu ${gameState.currentLevel + 1}: ${q.type === 'tf' ? q.lead : q.q}`;
-            answersGrid.innerHTML = '';
-            tfArea.innerHTML = '';
-            shortArea.classList.add('hidden');
-            tfArea.classList.add('hidden');
-            answersGrid.classList.add('hidden');
-            hintBox.classList.add('hidden');
+            document.getElementById('question-text').innerHTML = `Câu ${gameState.currentLevel + 1}: ${q.type === 'tf' ? q.lead : q.q}`;
             
-            if (gameState.currentLevel >= 5) btnStop.classList.remove('hidden');
-            else btnStop.classList.add('hidden');
+            const grid = document.getElementById('answers-grid');
+            const tf = document.getElementById('tf-area');
+            const sh = document.getElementById('short-area');
+            const hint = document.getElementById('lifeline-hint');
+            
+            grid.innerHTML = ''; tf.innerHTML = ''; hint.classList.add('hidden');
+            grid.classList.add('hidden'); tf.classList.add('hidden'); sh.classList.add('hidden');
 
             document.querySelectorAll('.ladder-item').forEach(el => el.classList.remove('ladder-active'));
             document.getElementById(`ladder-${gameState.currentLevel}`).classList.add('ladder-active');
 
             if (q.type === 'mcq') {
-                answersGrid.classList.remove('hidden');
-                const opts = q.a.map((text, i) => ({ text, i }));
-                opts.sort(() => 0.5 - Math.random());
-                q.shuffledOpts = opts;
-
-                opts.forEach((opt, idx) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'btn-answer';
-                    btn.id = `opt-${idx}`;
-                    btn.innerHTML = `${String.fromCharCode(65 + idx)}. ${opt.text}`;
-                    btn.onclick = () => selectMcq(idx);
-                    answersGrid.appendChild(btn);
+                grid.classList.remove('hidden');
+                q.shuffled = q.a.map((t, i) => ({t, i})).sort(() => 0.5 - Math.random());
+                q.shuffled.forEach((opt, idx) => {
+                    const b = document.createElement('button');
+                    b.className = 'btn-answer';
+                    b.innerHTML = `${String.fromCharCode(65+idx)}. ${opt.t}`;
+                    b.onclick = () => { playSound('pingpong'); document.querySelectorAll('.btn-answer').forEach(x=>x.classList.remove('selected')); b.classList.add('selected'); gameState.selectedIdx = idx; };
+                    grid.appendChild(b);
                 });
             } else if (q.type === 'tf') {
-                tfArea.classList.remove('hidden');
-                gameState.tempSelections = new Array(4).fill(null);
-                q.items.forEach((item, idx) => {
+                tf.classList.remove('hidden');
+                gameState.tempSelections = [null, null, null, null];
+                q.items.forEach((it, idx) => {
                     const row = document.createElement('div');
-                    row.className = 'flex justify-between items-center bg-black/20 p-2 rounded mb-1';
-                    row.innerHTML = `
-                        <div class="flex-grow pr-4">${String.fromCharCode(97 + idx)}) ${item.text}</div>
-                        <div class="flex gap-2 shrink-0">
-                            <button onclick="selectTF(${idx}, true)" id="tf-${idx}-t" class="px-3 py-1 bg-gray-500 rounded text-sm">Đúng</button>
-                            <button onclick="selectTF(${idx}, false)" id="tf-${idx}-f" class="px-3 py-1 bg-gray-500 rounded text-sm">Sai</button>
-                        </div>
-                    `;
-                    tfArea.appendChild(row);
+                    row.className = "flex justify-between items-center bg-black/20 p-2 rounded mb-2";
+                    row.innerHTML = `<div class='pr-4 text-sm'>${String.fromCharCode(97+idx)}) ${it.text}</div><div class='flex gap-2 shrink-0'><button id='t-${idx}' class='px-3 py-1 bg-gray-500 rounded text-xs'>Đúng</button><button id='f-${idx}' class='px-3 py-1 bg-gray-500 rounded text-xs'>Sai</button></div>`;
+                    tf.appendChild(row);
+                    row.querySelector(`#t-${idx}`).onclick = () => { playSound('pingpong'); gameState.tempSelections[idx] = true; row.querySelector(`#t-${idx}`).className = 'px-3 py-1 bg-green-600 rounded text-xs'; row.querySelector(`#f-${idx}`).className = 'px-3 py-1 bg-gray-500 rounded text-xs'; };
+                    row.querySelector(`#f-${idx}`).onclick = () => { playSound('pingpong'); gameState.tempSelections[idx] = false; row.querySelector(`#t-${idx}`).className = 'px-3 py-1 bg-gray-500 rounded text-xs'; row.querySelector(`#f-${idx}`).className = 'px-3 py-1 bg-red-600 rounded text-xs'; };
                 });
-            } else if (q.type === 'short') {
-                shortArea.classList.remove('hidden');
+            } else {
+                sh.classList.remove('hidden');
                 document.getElementById('short-input').value = '';
                 document.getElementById('short-input').focus();
             }
 
-            document.getElementById('life-5050').style.display = (q.type === 'mcq' && gameState.currentLevel < 12 && gameState.lifelines['5050']) ? 'block' : 'none';
+            document.getElementById('life-5050').style.display = (q.type === 'mcq' && gameState.lifelines['5050']) ? 'block' : 'none';
             document.getElementById('life-audience').style.display = gameState.lifelines['audience'] ? 'block' : 'none';
             document.getElementById('life-phone').style.display = gameState.lifelines['phone'] ? 'block' : 'none';
-
-            // Xử lý render công thức
+            document.getElementById('btn-stop').classList.toggle('hidden', gameState.currentLevel < 5);
             renderMath();
-        }
-
-        function startTimer() {
-            gameState.timerInterval = setInterval(() => {
-                gameState.timer--;
-                updateTimerUI();
-                if (gameState.timer <= 0) {
-                    clearInterval(gameState.timerInterval);
-                    onTimeOut();
-                }
-            }, 1000);
-        }
-
-        function updateTimerUI() {
-            const tEl = document.getElementById('timer');
-            tEl.innerText = `${gameState.timer}s`;
-            if (gameState.timer <= 10) tEl.classList.add('timer-warning');
-            else tEl.classList.remove('timer-warning');
-        }
-
-        function selectMcq(idx) {
-            playSound('pingpong');
-            document.querySelectorAll('.btn-answer').forEach(b => b.classList.remove('selected'));
-            document.getElementById(`opt-${idx}`).classList.add('selected');
-            gameState.selectedIdx = idx;
-        }
-
-        function selectTF(row, val) {
-            playSound('pingpong');
-            gameState.tempSelections[row] = val;
-            const tBtn = document.getElementById(`tf-${row}-t`);
-            const fBtn = document.getElementById(`tf-${row}-f`);
-            if (val) {
-                tBtn.className = "px-3 py-1 bg-green-600 rounded text-sm";
-                fBtn.className = "px-3 py-1 bg-gray-500 rounded text-sm";
-            } else {
-                tBtn.className = "px-3 py-1 bg-gray-500 rounded text-sm";
-                fBtn.className = "px-3 py-1 bg-red-600 rounded text-sm";
-            }
         }
 
         function submitAnswer() {
             const q = gameState.questions[gameState.currentLevel];
-            let isCorrect = false;
-            let userAnsText = "";
-            let correctAnsText = "";
-
+            let correct = false, uA = "", cA = "", details = {};
+            
             if (q.type === 'mcq') {
-                if (gameState.selectedIdx === undefined) {
-                    alert("Vui lòng chọn một phương án!");
-                    return;
-                }
-                const chosen = q.shuffledOpts[gameState.selectedIdx];
-                isCorrect = (chosen.i === q.c);
-                userAnsText = chosen.text;
-                correctAnsText = q.a[q.c];
+                if (gameState.selectedIdx === undefined) return alert("Vui lòng chọn một đáp án!");
+                const ch = q.shuffled[gameState.selectedIdx];
+                correct = ch.i === q.c;
+                uA = String.fromCharCode(65 + gameState.selectedIdx);
+                cA = String.fromCharCode(65 + q.shuffled.findIndex(x => x.i === q.c));
+                details = { shuffled: q.shuffled, originalCorrect: q.c, userIdx: gameState.selectedIdx };
             } else if (q.type === 'tf') {
-                if (gameState.tempSelections.includes(null)) {
-                    alert("Vui lòng trả lời đủ 4 ý Đúng/Sai!");
-                    return;
-                }
-                isCorrect = gameState.tempSelections.every((val, i) => val === q.items[i].c);
-                userAnsText = gameState.tempSelections.map((v, i) => `${String.fromCharCode(97+i)}: ${v?'Đ':'S'}`).join(', ');
-                correctAnsText = q.items.map((v, i) => `${String.fromCharCode(97+i)}: ${v.c?'Đ':'S'}`).join(', ');
+                if (gameState.tempSelections.includes(null)) return alert("Vui lòng chọn đủ Đúng/Sai cho cả 4 ý!");
+                correct = gameState.tempSelections.every((v, i) => v === q.items[i].c);
+                uA = gameState.tempSelections.map(v => v ? "Đ" : "S").join("|");
+                cA = q.items.map(v => v.c ? "Đ" : "S").join("|");
+                details = { selections: [...gameState.tempSelections], items: q.items };
             } else {
-                const val = document.getElementById('short-input').value.trim().replace('.', ',');
-                if (!val) {
-                    alert("Vui lòng nhập đáp án!");
-                    return;
-                }
-                isCorrect = (val === q.a);
-                userAnsText = val;
-                correctAnsText = q.a;
+                uA = document.getElementById('short-input').value.trim().replace('.', ',');
+                if(!uA) return alert("Vui lòng nhập đáp án!");
+                correct = uA === q.a; cA = q.a;
             }
 
-            clearInterval(gameState.timerInterval);
-
-            gameState.history.push({
-                q: q.type === 'tf' ? q.lead : q.q,
-                type: q.type,
-                userAns: userAnsText,
-                correctAns: correctAnsText,
-                isCorrect: isCorrect,
-                exp: q.exp || (q.items ? q.items.map(it => it.exp).join('<br>') : "")
+            gameState.history.push({ 
+                q: q.type==='tf'?q.lead:q.q, isCorrect: correct, userAns: uA, correctAns: cA, 
+                exp: q.exp || (q.items ? q.items.map(x=>x.exp).join("<br>") : ""),
+                type: q.type, details: details
             });
 
-            if (isCorrect) {
+            if (correct) {
                 playSound('correct');
                 if (gameState.currentLevel === 4) {
-                    showModal("Chúc mừng!", "Chúc mừng thí sinh đã vượt qua câu hỏi số 5! Điểm của bạn hiện nay là 5,0 điểm! Nếu bạn chọn đi tiếp mà trả lời sai câu nào thì điểm số quay lại mốc 5 điểm. Bạn đã rõ luật chơi? Mời bạn nhấn TIẾP TỤC.", "Tiếp tục", nextQuestion);
+                    showModal("Mốc 5 điểm!", "Chúc mừng Bạn đã vượt qua câu số 5, đạt 5đ. Từ câu 6 trở đi, bạn có thể chọn dừng cuộc chơi để bảo toàn số điểm, nếu trả lời không đúng từ câu 6 đến 10, sẽ quay về mốc 5 điểm. Tiếp tục?", "Tiếp tục", next, 5);
                 } else if (gameState.currentLevel === 9) {
-                    showModal("Chúc mừng!", "Chúc mừng thí sinh đã vượt qua câu hỏi số 10! Điểm của bạn hiện nay là 7,0 điểm! Nếu bạn chọn đi tiếp mà trả lời sai câu nào thì điểm số quay lại mốc 7 điểm. Bạn đã rõ luật chơi? Mời bạn nhấn TIẾP TỤC.", "Tiếp tục", nextQuestion);
+                    showModal("Mốc 10 điểm!", "Chúc mừng Bạn đã vượt qua câu số 10, đạt 7đ. Từ câu 11 trở đi, bạn có thể chọn dừng cuộc chơi để bảo toàn số điểm, nếu trả lời không đúng sẽ quay về mốc 7 điểm. Tiếp tục?", "Tiếp tục", next, 10);
                 } else if (gameState.currentLevel === 19) {
-                    endGame(true);
+                    end(true);
                 } else {
-                    nextQuestion();
+                    next();
                 }
             } else {
                 playSound('wrong');
-                endGame(false);
+                end(false);
             }
         }
 
-        function nextQuestion() {
-            gameState.currentLevel++;
-            gameState.selectedIdx = undefined;
-            loadQuestion();
-        }
+        function next() { gameState.currentLevel++; gameState.selectedIdx = undefined; loadQuestion(); }
 
-        function onTimeOut() {
-            playSound('wrong');
-            alert("Hết thời gian!");
-            endGame(false);
-        }
-
-        function stopGameManual() {
-            playSound('pingpong');
-            endGame(true, true);
-        }
-
-        function endGame(isWin, manualStop = false) {
+        function end(win, manual = false) {
             gameState.isGameOver = true;
             clearInterval(gameState.timerInterval);
-            
-            let finalScore = 0;
-            if (manualStop) {
-                finalScore = pointsConfig[gameState.currentLevel - 1];
-            } else if (isWin) {
-                finalScore = pointsConfig[19];
-            } else {
-                if (gameState.currentLevel < 5) finalScore = 0;
-                else if (gameState.currentLevel < 10) finalScore = 5.0;
-                else finalScore = 7.0;
-            }
-
-            gameState.score = finalScore;
-            
+            let score = manual ? pointsConfig[gameState.currentLevel - 1] : (win ? 10 : (gameState.currentLevel < 5 ? 0 : (gameState.currentLevel < 10 ? 5 : 7)));
             document.getElementById('screen-game').classList.add('hidden-screen');
             document.getElementById('screen-result').classList.remove('hidden-screen');
-            document.getElementById('points-ladder').classList.add('hidden-screen');
-            document.getElementById('game-header').classList.add('hidden-screen');
-
-            const rank = finalScore === 10 ? "Xuất sắc" : (finalScore >= 8 ? "Tốt" : (finalScore >= 5 ? "Khá" : "Cần cố gắng"));
-            document.getElementById('result-text').innerHTML = `
-                Thí sinh: <strong>${gameState.user.name}</strong><br>
-                SBD: ${gameState.user.sbd} - Lớp: ${gameState.user.class}<br>
-                Điểm số: <span class="text-3xl font-bold text-yellow-400">${finalScore.toFixed(1)}</span><br>
-                Xếp loại: <strong>${rank}</strong>
-            `;
-
-            if (finalScore >= 5) startFireworks();
+            document.getElementById('result-text').innerHTML = `Điểm của bạn: <span class='text-4xl font-bold'>${score.toFixed(1)}</span><br>Xếp loại: ${score >= 8 ? 'Giỏi' : (score >= 5 ? 'Khá' : 'Cần cố gắng')}`;
+            if (score >= 5) startFireworks();
         }
 
         function useLifeline(type) {
             if (!gameState.lifelines[type]) return;
-            playSound('pingpong');
             gameState.lifelines[type] = false;
             document.getElementById(`life-${type}`).style.display = 'none';
-
+            const hint = document.getElementById('lifeline-hint');
+            hint.classList.remove('hidden');
             const q = gameState.questions[gameState.currentLevel];
-            const hintBox = document.getElementById('lifeline-hint');
-            hintBox.classList.remove('hidden');
-
             if (type === '5050') {
-                const wrongIndices = q.shuffledOpts
-                    .map((opt, idx) => ({ opt, idx }))
-                    .filter(item => item.opt.i !== q.c);
-                wrongIndices.sort(() => 0.5 - Math.random()).slice(0, 2).forEach(item => {
-                    document.getElementById(`opt-${item.idx}`).style.visibility = 'hidden';
-                });
-                hintBox.innerText = "Hệ thống đã loại bỏ 2 phương án sai!";
+                const wr = q.shuffled.filter(x => x.i !== q.c).sort(() => 0.5 - Math.random()).slice(0, 2);
+                document.querySelectorAll('.btn-answer').forEach(b => { wr.forEach(w => { if(b.innerText.includes(w.t)) b.style.visibility = 'hidden'; })});
+                hint.innerText = "Hệ thống đã loại 2 phương án sai.";
             } else if (type === 'audience') {
                 if (q.type === 'mcq') {
-                    // Tìm xem phương án đúng nằm ở vị trí nào sau khi xáo trộn
-                    const correctShuffledIdx = q.shuffledOpts.findIndex(opt => opt.i === q.c);
-                    
-                    // Tạo tỷ lệ bình chọn ngẫu nhiên nhưng ưu tiên đáp án đúng
-                    let votes = [0, 0, 0, 0];
-                    let remaining = 100;
-                    
-                    // Khán giả "thông minh": đáp án đúng chiếm từ 60% đến 85%
-                    const correctPercent = Math.floor(Math.random() * (85 - 60 + 1)) + 60;
-                    votes[correctShuffledIdx] = correctPercent;
-                    remaining -= correctPercent;
-
-                    // Phân bổ phần còn lại cho 3 đáp án sai
-                    for(let i=0; i<3; i++) {
-                        let targetIdx = (correctShuffledIdx + i + 1) % 4;
-                        if (i === 2) {
-                            votes[targetIdx] = remaining;
-                        } else {
-                            let v = Math.floor(Math.random() * (remaining + 1));
-                            votes[targetIdx] = v;
-                            remaining -= v;
-                        }
-                    }
-
-                    hintBox.innerHTML = `Kết quả bình chọn từ khán giả:<br>
-                        <strong>A: ${votes[0]}% | B: ${votes[1]}% | C: ${votes[2]}% | D: ${votes[3]}%</strong><br>
-                        <span class="text-sm italic">(Đa số khán giả đang nghiêng về phương án có tỷ lệ cao nhất)</span>`;
-                } else {
-                    // Đối với câu Đúng/Sai và Trả lời ngắn: Hiện gợi ý chi tiết
-                    hintBox.innerHTML = `<strong>Khán giả gợi ý kiến thức:</strong><br>${q.hint}`;
-                }
-            } else if (type === 'phone') {
-                hintBox.innerHTML = `<strong>Chuyên gia tư vấn:</strong><br>"Theo kinh nghiệm của mình, câu này đáp án có khả năng cao liên quan đến: <em>${q.hint}</em>. Bạn hãy cân nhắc nhé!"`;
-            }
+                    let v = [10, 10, 10, 10]; const cIdx = q.shuffled.findIndex(x => x.i === q.c); v[cIdx] = 70;
+                    hint.innerText = `Khán giả bình chọn: A:${v[0]}% B:${v[1]}% C:${v[2]}% D:${v[3]}%`;
+                } else hint.innerHTML = `Khán giả gợi ý kiến thức: ${q.hint}`;
+            } else hint.innerHTML = `Người thân gợi ý: "Dựa trên kiến thức về ${q.hint}, mình nghĩ câu này sẽ có đáp án tương ứng."`;
             renderMath();
         }
 
-        function showModal(title, body, btnTxt, callback) {
-            document.getElementById('modal-title').innerText = title;
-            document.getElementById('modal-body').innerText = body;
-            document.getElementById('modal-btn').innerText = btnTxt;
-            const modal = document.getElementById('global-modal');
-            modal.classList.remove('hidden');
-            window.modalCallback = callback;
+        function showRules() { playSound('pingpong'); document.getElementById('screen-login').classList.add('hidden-screen'); document.getElementById('screen-rules').classList.remove('hidden-screen'); }
+        function backToHome() { playSound('pingpong'); document.getElementById('screen-rules').classList.add('hidden-screen'); document.getElementById('screen-login').classList.remove('hidden-screen'); }
+        
+        function showModal(t, b, btn, cb, level) { 
+            const card = document.getElementById('modal-card');
+            card.className = "milestone-card " + (level === 5 ? "level-5" : "level-10");
+            document.getElementById('modal-title').innerText = t; 
+            document.getElementById('modal-body').innerText = b; 
+            document.getElementById('modal-btn').innerText = btn; 
+            document.getElementById('global-modal').classList.remove('hidden'); 
+            window.modalCb = cb; 
             renderMath();
         }
 
-        function closeModal() {
-            document.getElementById('global-modal').classList.add('hidden');
-            if (window.modalCallback) window.modalCallback();
-        }
-
-        function startFireworks() {
-            const canvas = document.getElementById('fireworks');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            let particles = [];
-            
-            function createParticle(x, y) {
-                const colors = ['#f1c40f', '#e74c3c', '#2ecc71', '#3498db', '#9b59b6'];
-                for (let i = 0; i < 30; i++) {
-                    particles.push({
-                        x, y,
-                        vx: (Math.random() - 0.5) * 10,
-                        vy: (Math.random() - 0.5) * 10,
-                        alpha: 1,
-                        color: colors[Math.floor(Math.random() * colors.length)]
-                    });
-                }
-            }
-
-            function animate() {
-                if (!gameState.isGameOver) return;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                if (Math.random() < 0.05) createParticle(Math.random() * canvas.width, Math.random() * canvas.height * 0.5);
-                
-                particles.forEach((p, i) => {
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    p.vy += 0.1;
-                    p.alpha -= 0.01;
-                    ctx.globalAlpha = p.alpha;
-                    ctx.fillStyle = p.color;
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-                    ctx.fill();
-                    if (p.alpha <= 0) particles.splice(i, 1);
-                });
-                requestAnimationFrame(animate);
-            }
-            animate();
-        }
+        function closeModal() { document.getElementById('global-modal').classList.add('hidden'); if(window.modalCb) window.modalCb(); }
+        function startTimer() { gameState.timerInterval = setInterval(() => { gameState.timer--; updateTimerUI(); if(gameState.timer <= 0) { clearInterval(gameState.timerInterval); end(false); } }, 1000); }
+        function updateTimerUI() { const t = document.getElementById('timer'); t.innerText = `${gameState.timer}s`; t.className = gameState.timer <= 10 ? "text-xl font-bold timer-warning" : "text-xl font-bold text-yellow-400"; }
+        function stopGameManual() { playSound('pingpong'); end(true, true); }
+        function restartGame() { location.reload(); }
+        function closeHistory() { document.getElementById('screen-history').classList.add('hidden-screen'); document.getElementById('screen-result').classList.remove('hidden-screen'); }
 
         function showHistory() {
-            const content = document.getElementById('history-content');
-            content.innerHTML = '';
-            gameState.history.forEach((item, i) => {
-                const div = document.createElement('div');
-                div.className = `p-4 rounded-lg border-l-8 ${item.isCorrect ? 'bg-green-50 border-green-500' : 'bg-red-50 border-red-500'}`;
-                div.innerHTML = `
-                    <p class="font-bold">Câu ${i+1}: ${item.q}</p>
-                    <p>Bạn chọn: <span class="${item.isCorrect ? 'text-green-700' : 'text-red-700'} font-bold">${item.userAns}</span></p>
-                    <p>Đáp án đúng: <span class="text-green-700 font-bold">${item.correctAns}</span></p>
-                    <div class="mt-2 text-sm italic border-t pt-2">Giải thích: ${item.exp}</div>
-                `;
-                content.appendChild(div);
+            const cont = document.getElementById('history-content'); cont.innerHTML = '';
+            gameState.history.forEach((h, i) => {
+                const d = document.createElement('div');
+                d.className = `p-6 rounded-2xl bg-gray-50 text-gray-900 shadow-sm border-l-8 ${h.isCorrect ? 'border-green-500' : 'border-red-500'}`;
+                let answerHtml = "";
+                if (h.type === 'mcq') {
+                    answerHtml = `<div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2">`;
+                    h.details.shuffled.forEach((opt, idx) => {
+                        const label = String.fromCharCode(65 + idx);
+                        const isUserChoice = (idx === h.details.userIdx);
+                        const isCorrectOpt = (opt.i === h.details.originalCorrect);
+                        let styleClass = "border p-2 rounded-lg ";
+                        if (isUserChoice) styleClass += h.isCorrect ? "bg-green-100 border-green-600 text-green-800 font-bold" : "bg-red-100 border-red-600 text-red-800 font-bold";
+                        else if (isCorrectOpt) styleClass += "bg-green-50 border-green-400 text-green-700 font-bold";
+                        else styleClass += "bg-white border-gray-200 text-gray-500";
+                        answerHtml += `<div class="${styleClass}">${label}. ${opt.t}</div>`;
+                    });
+                    answerHtml += `</div>`;
+                } else if (h.type === 'tf') {
+                    answerHtml = `<div class="mt-4 space-y-2">`;
+                    h.details.items.forEach((item, idx) => {
+                        const userVal = h.details.selections[idx];
+                        const isItemCorrect = userVal === item.c;
+                        answerHtml += `<div class="p-2 border rounded-lg ${isItemCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}">
+                            ${String.fromCharCode(97+idx)}) ${item.text} 
+                            <span class="font-bold ml-2 ${isItemCorrect?'text-green-700':'text-red-700'}">Bạn: ${userVal?'Đ':'S'} | Đáp án: ${item.c?'Đ':'S'}</span>
+                        </div>`;
+                    });
+                    answerHtml += `</div>`;
+                } else {
+                    answerHtml = `<div class="mt-4 p-3 border rounded-lg bg-gray-100"><p>Bạn đã nhập: <span class="${h.isCorrect?'text-green-700':'text-red-700'} font-bold">${h.userAns}</span></p><p>Đáp án đúng: <span class="text-green-700 font-bold">${h.correctAns}</span></p></div>`;
+                }
+                d.innerHTML = `<h4 class="text-xl font-bold mb-2">Câu ${i+1}: ${h.q}</h4>${answerHtml}<div class="mt-4 p-4 bg-blue-50 rounded-xl border-l-4 border-blue-500 text-sm italic">💡 Giải thích: ${h.exp}</div>`;
+                cont.appendChild(d);
             });
-            document.getElementById('screen-result').classList.add('hidden-screen');
+            document.getElementById('screen-result').classList.add('hidden-screen'); 
             document.getElementById('screen-history').classList.remove('hidden-screen');
             renderMath();
         }
 
-        function closeHistory() {
-            document.getElementById('screen-history').classList.add('hidden-screen');
-            document.getElementById('screen-result').classList.remove('hidden-screen');
-        }
-
-        function restartGame() {
-            location.reload();
+        function startFireworks() {
+            const canvas = document.getElementById('fireworks'); const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            let parts = [];
+            function animate() {
+                if (!gameState.isGameOver) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                if (Math.random() < 0.05) {
+                    const x = Math.random() * canvas.width, y = Math.random() * canvas.height * 0.5;
+                    for(let i=0; i<30; i++) parts.push({x, y, vx:(Math.random()-0.5)*8, vy:(Math.random()-0.5)*8, a:1, c:`hsl(${Math.random()*360}, 100%, 50%)`});
+                }
+                parts.forEach((p, i) => { p.x += p.vx; p.y += p.vy; p.vy += 0.1; p.a -= 0.01; ctx.globalAlpha = p.a; ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, 7); ctx.fill(); if(p.a <= 0) parts.splice(i, 1); });
+                requestAnimationFrame(animate);
+            }
+            animate();
         }
 
         window.onload = init;
