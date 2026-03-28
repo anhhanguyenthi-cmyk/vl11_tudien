@@ -135,41 +135,43 @@
 
             <!-- Rules Screen -->
             <div id="screen-rules" class="hidden-screen bg-white text-black p-8 rounded-2xl shadow-2xl max-w-4xl mx-auto mt-4">
-                <h2 class="text-2xl font-bold mb-4 text-center text-blue-800">THỂ LỆ TRÒ CHƠI AI LÀ TRIỆU PHÚ (PHIÊN BẢN GIÁO DỤC)</h2>
-                <div class="space-y-4 text-base leading-relaxed">
-                    <p>Người chơi sẽ chinh phục 20 câu hỏi về <strong>Tụ điện</strong> với 2 chế độ:</p>
-                    <ul class="list-disc ml-6">
-                        <li><strong>Luyện tập:</strong> Tự do tra cứu, làm lại nhiều lần, có thể chuyển tab.</li>
-                        <li><strong>Ngồi ghế nóng:</strong> Chống gian lận nghiêm ngặt. Hệ thống sẽ kết thúc bài nếu bạn rời khỏi màn hình ứng dụng.</li>
+                <h2 class="text-2xl font-bold mb-4 text-center text-blue-800 uppercase">THỂ LỆ TRÒ CHƠI</h2>
+                <div class="space-y-4 text-base leading-relaxed text-gray-800">
+                    <p>Nếu ở chế độ <strong>luyện tập</strong>, bạn có thể làm lại nhiều lần, có thể chuyển qua cửa sổ (tab) khác để tra cứu. Còn ở chế độ <strong>NGỒI VÀO GHẾ NÓNG</strong>, bạn tuyệt đối không được mở các cửa sổ khác, không được tra cứu qua messenger, zalo,... nếu tự động chuyển tab, cuộc thi kết thúc.</p>
+                    <p><strong>Cấu trúc bài thi:</strong> 20 câu hỏi về Tụ điện (12 MCQ, 4 Đúng/Sai, 4 Tính toán ngắn).</p>
+                    <p><strong>Các mốc quan trọng:</strong></p>
+                    <ul class="list-disc ml-6 space-y-1">
+                        <li>Vượt qua mốc 5 câu, được 5 điểm.</li>
+                        <li>Từ câu thứ 6 đến câu 20 bạn có quyền dừng cuộc chơi bất kì lúc nào để bảo toàn số điểm.</li>
+                        <li>Nếu sai ở câu từ câu 6 đến câu 10, sẽ quay về 5 điểm.</li>
+                        <li>Nếu sai từ câu 11 đến câu 20, điểm trở về mốc 7 điểm.</li>
                     </ul>
-                    <p><strong>Cấu trúc câu hỏi:</strong> Câu 1-12 (MCQ), Câu 13-16 (Đúng/Sai), Câu 17-20 (Trả lời ngắn).</p>
-                    <p>Mỗi câu có tối đa <strong>180 giây</strong>. Trả lời sai trước mốc 5 về 0đ. Sai từ 6-10 về 5đ. Sai từ 11-20 về mốc 7đ.</p>
                 </div>
-                <button onclick="backToHome()" class="mt-6 bg-red-600 text-white px-6 py-2 rounded-lg block mx-auto font-bold uppercase">Quay lại trang chủ</button>
+                <button onclick="backToHome()" class="mt-6 bg-red-600 text-white px-6 py-2 rounded-lg block mx-auto font-bold uppercase transition hover:bg-red-700">Quay lại trang chủ</button>
             </div>
 
             <!-- Gameplay Screen -->
             <div id="screen-game" class="hidden-screen mt-2">
                 <div id="question-container" class="bg-black/40 p-6 rounded-xl border border-blue-500/30 mb-4">
-                    <div id="question-text" class="text-2xl font-bold mb-6">Đang nạp dữ liệu câu hỏi...</div>
+                    <div id="question-text" class="text-2xl font-bold mb-6">Đang tải câu hỏi...</div>
                     <div id="lifeline-hint" class="hidden mb-4 p-3 bg-yellow-100 text-black rounded-lg border-l-4 border-yellow-600"></div>
                     <div id="answers-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
                     <div id="tf-area" class="hidden space-y-4"></div>
                     <div id="short-area" class="hidden space-y-4">
-                        <p class="text-sm text-yellow-300 italic">Nhập kết quả không quá 4 kí tự, dùng dấu phẩy (,) nếu là số thập phân, ví dụ: 2,5</p>
-                        <input type="text" id="short-input" maxlength="10" class="w-full p-4 rounded bg-white text-black text-center text-2xl font-bold outline-none border-4 border-blue-400">
+                        <p class="text-sm text-yellow-300 italic font-medium"> Nhập kết quả không quá 4 kí tự, không có đơn vị, dùng dấu phẩy (,) nếu là số thập phân, ví dụ: 2,5</p>
+                        <input type="text" id="short-input" maxlength="10" class="w-full p-4 rounded bg-white text-black text-center text-3xl font-bold outline-none border-4 border-blue-400">
                     </div>
                 </div>
                 <div class="flex justify-between items-center px-4">
-                    <button id="btn-stop" onclick="stopGameManual()" class="hidden bg-gray-600 px-4 py-2 rounded hover:bg-gray-500">Dừng cuộc chơi</button>
+                    <button id="btn-stop" onclick="stopGameManual()" class="hidden bg-gray-600 px-4 py-2 rounded hover:bg-gray-500 transition font-bold">Dừng cuộc chơi</button>
                     <button id="btn-submit" onclick="submitAnswer()" class="bg-green-600 px-10 py-3 rounded-full font-bold hover:bg-green-500 ml-auto shadow-lg transition transform hover:scale-105">Nộp bài</button>
                 </div>
             </div>
 
             <!-- Result Screen -->
             <div id="screen-result" class="hidden-screen bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-2xl text-center border border-white/20 mt-10">
-                <h2 id="result-title" class="text-4xl font-bold text-yellow-400 mb-4 uppercase">KẾT QUẢ</h2>
-                <div id="result-text" class="text-xl mb-6"></div>
+                <h2 id="result-title" class="text-4xl font-bold text-yellow-400 mb-6 uppercase">KẾT QUẢ</h2>
+                <div id="result-text" class="text-xl mb-8 leading-loose"></div>
                 <div class="flex flex-wrap justify-center gap-4">
                     <button id="btn-history" onclick="showHistory()" class="bg-blue-600 px-8 py-3 rounded-full font-bold shadow-md hover:bg-blue-500 transition">Lịch sử làm bài</button>
                     <button onclick="restartGame()" class="bg-yellow-500 text-black px-8 py-3 rounded-full font-bold shadow-md hover:bg-yellow-400 transition">Làm lại</button>
@@ -178,9 +180,9 @@
 
             <!-- History Screen -->
             <div id="screen-history" class="hidden-screen bg-white text-black p-4 md:p-6 rounded-2xl shadow-2xl mt-4 overflow-y-auto max-h-[85vh]">
-                <h2 class="text-2xl font-bold mb-6 text-center sticky top-0 bg-white py-3 border-b z-10 uppercase text-blue-900">Chi tiết phần thi của triệu phú</h2>
+                <h2 class="text-2xl font-bold mb-6 text-center sticky top-0 bg-white py-3 border-b z-10 uppercase text-blue-900">Chi tiết bài làm</h2>
                 <div id="history-content" class="space-y-10 pb-12"></div>
-                <button onclick="closeHistory()" class="mt-8 bg-red-600 text-white px-8 py-3 rounded-lg block mx-auto font-bold uppercase sticky bottom-0 shadow-2xl z-20">Đóng lịch sử</button>
+                <button onclick="closeHistory()" class="mt-8 bg-red-600 text-white px-8 py-3 rounded-lg block mx-auto font-bold uppercase sticky bottom-0 shadow-2xl z-20 transition hover:bg-red-700">Đóng lịch sử</button>
             </div>
         </div>
 
@@ -196,7 +198,7 @@
         </div>
     </div>
 
-    <div class="fixed bottom-0 left-0 w-full bg-black/70 text-[11px] p-1 text-center italic z-50 text-white tracking-wide">
+    <div class="fixed bottom-0 left-0 w-full bg-black/70 text-[11px] p-1 text-center italic z-50 text-white tracking-wide border-t border-white/10">
         Bản quyền thuộc về thạc sĩ Nguyễn Thị Ánh Hà, THPT Nguyễn Trường Tộ, Thành phố Huế
     </div>
 
@@ -205,78 +207,78 @@
 
         const questionBank = {
             mcq: [
-                { q: "Tụ điện là hệ thống gồm hai vật dẫn đặt gần nhau và ngăn cách nhau bởi", a: ["một lớp điện môi.", "một lớp kim loại.", "một dây dẫn.", "không khí hoàn toàn."], c: 0, exp: "Tụ điện gồm hai vật dẫn cách nhau bởi lớp cách điện (điện môi) để lưu trữ điện tích.", hint: "Vật ở giữa phải cách điện." },
+                { q: "Tụ điện là hệ thống gồm hai vật dẫn đặt gần nhau và ngăn cách nhau bởi", a: ["một lớp điện môi.", "một lớp kim loại.", "một dây dẫn.", "không khí hoàn toàn."], c: 0, exp: "Tụ điện gồm hai vật dẫn cách nhau bởi lớp cách điện (điện môi).", hint: "Vật ở giữa phải cách điện." },
                 { q: "Đơn vị của điện dung trong hệ SI là", a: ["Fara (F).", "Vôn (V).", "Culông (C).", "Ampe (A)."], c: 0, exp: "Điện dung đo bằng Fara (F), đặt theo tên Michael Faraday.", hint: "Fara là đơn vị chuẩn." },
-                { q: "Công thức liên hệ $Q, C, U$ là", a: ["$Q = C.U$.", "$Q = C/U$.", "$U = C.Q$.", "$C = Q.U$."], c: 0, exp: "Điện tích $Q$ tỉ lệ thuận với hiệu điện thế $U$ qua hằng số điện dung $C$: $Q = CU$.", hint: "Q = C nhân U." },
+                { q: "Công thức liên hệ $Q, C, U$ của tụ điện là", a: ["$Q = C.U$.", "$Q = C/U$.", "$U = C.Q$.", "$C = Q.U$."], c: 0, exp: "Điện tích $Q$ tỉ lệ thuận với hiệu điện thế $U$ qua hằng số điện dung $C$: $Q = CU$.", hint: "Q = C nhân U." },
                 { q: "Năng lượng tụ điện tích trữ dưới dạng", a: ["điện trường.", "từ trường.", "nhiệt năng.", "hóa năng."], c: 0, exp: "Tụ điện tích trữ năng lượng trong điện trường đều giữa hai bản tụ.", hint: "Giữa hai bản tụ có điện trường." },
-                { q: "Đơn vị $1 \\mu F$ bằng bao nhiêu Fara?", a: ["$10^{-6} F$.", "$10^{-9} F$.", "$10^{-3} F$.", "$10^{-12} F$."], c: 0, exp: "Micro là bội số $10^{-6}$.", hint: "Tiền tố micro là mười mũ trừ 6." },
-                { q: "Trên tụ ghi $470 \\mu F - 25 V$. Con số $25 V$ cho biết gì?", a: ["Hiệu điện thế định mức.", "Hiệu điện thế trung bình.", "Suất điện động.", "Cường độ dòng điện."], c: 0, exp: "Đây là hiệu điện thế giới hạn để tụ không bị đánh thủng.", hint: "Điện áp tối đa cho phép." },
-                { q: "Khi tăng hiệu điện thế U giữa 2 bản tụ lên 2 lần thì điện dung C của tụ sẽ", a: ["không đổi.", "tăng 2 lần.", "giảm 2 lần.", "tăng 4 lần."], c: 0, exp: "Điện dung $C$ là hằng số chỉ phụ thuộc vào cấu tạo của tụ.", hint: "C không phụ thuộc U và Q." },
-                { q: "Ghép song song hai tụ $C_1 = 2 \\mu F$ và $C_2 = 3 \\mu F$ thì điện dung bộ tụ là", a: ["$5 \\mu F$.", "$1,2 \\mu F$.", "$6 \\mu F$.", "$1 \\mu F$."], c: 0, exp: "$C_b = C_1 + C_2$ khi ghép song song.", hint: "Song song là cộng điện dung." },
-                { q: "Một tụ điện phẳng có điện dung phụ thuộc vào", a: ["khoảng cách giữa hai bản.", "điện tích của tụ.", "hiệu điện thế nguồn.", "bản chất vật liệu làm bản cực."], c: 0, exp: "$C$ tỉ lệ nghịch với khoảng cách $d$ giữa hai bản.", hint: "Phụ thuộc các yếu tố hình học." },
-                { q: "Công thức tính năng lượng tích trữ trong tụ điện là", a: ["$W = \\frac{1}{2}CU^2$.", "$W = CU^2$.", "$W = \\frac{1}{2}QU^2$.", "$W = \\frac{1}{2}C^2U$."], c: 0, exp: "Năng lượng điện trường tỉ lệ với bình phương hiệu điện thế.", hint: "Tương tự công thức động năng." },
-                { q: "Đơn vị hằng số điện môi $\\varepsilon$ là", a: ["không có đơn vị.", "Fara.", "Culông.", "Vôn."], c: 0, exp: "Hằng số điện môi là một tỉ số, đại lượng không thứ nguyên.", hint: "Nó là một hệ số so sánh." },
-                { q: "Thiết bị nào sau đây KHÔNG sử dụng tụ điện?", a: ["Bàn là nhiệt.", "Mạch lọc nguồn.", "Đèn flash máy ảnh.", "Máy thu thanh."], c: 0, exp: "Bàn là chỉ dùng điện trở tỏa nhiệt.", hint: "Tụ dùng để tích và phóng năng lượng nhanh." },
-                { q: "Để tích điện cho tụ, người ta phải nối tụ vào", a: ["nguồn điện.", "vật nhiễm điện.", "dây dẫn tiếp đất.", "nam châm."], c: 0, exp: "Cần hiệu điện thế để tách các điện tích đến các bản cực.", hint: "Cần sự chênh lệch điện thế." },
-                { q: "Điện dung của tụ điện đặc trưng cho khả năng gì của tụ?", a: ["Tích điện.", "Tỏa nhiệt.", "Phát sáng.", "Cách điện."], c: 0, exp: "Điện dung càng lớn, tụ tích được càng nhiều điện tích ở cùng một hiệu điện thế.", hint: "Khả năng lưu giữ điện." },
-                { q: "Kí hiệu của tụ xoay trong sơ đồ mạch điện thường có thêm", a: ["mũi tên xuyên qua.", "dấu cộng.", "dấu trừ.", "vòng tròn bao quanh."], c: 0, exp: "Mũi tên biểu thị giá trị có thể thay đổi được (xoay bản tụ).", hint: "Biểu thị sự biến thiên." },
-                { q: "Nếu nhúng tụ điện phẳng vào dầu ($\\varepsilon = 2$) thì điện dung của nó", a: ["tăng 2 lần.", "giảm 2 lần.", "không đổi.", "tăng 4 lần."], c: 0, exp: "$C = \\varepsilon C_0$ nên điện dung tăng tỉ lệ với hằng số điện môi.", hint: "Dầu là điện môi tốt hơn chân không." },
-                { q: "Năng lượng điện trường trong tụ sẽ giải phóng khi nào?", a: ["Khi nối hai bản bằng vật dẫn.", "Khi ngắt tụ khỏi nguồn.", "Khi để tụ lâu ngày.", "Khi nhúng tụ vào nước."], c: 0, exp: "Quá trình phóng điện xảy ra khi các điện tích trung hòa qua vật dẫn.", hint: "Khi tạo đường dẫn cho electron." },
-                { q: "Đơn vị $1 pF$ bằng bao nhiêu Fara?", a: ["$10^{-12} F$.", "$10^{-9} F$.", "$10^{-6} F$.", "$10^{-3} F$."], c: 0, exp: "Pico (p) tương ứng với mười mũ trừ mười hai.", hint: "Đơn vị rất nhỏ." },
-                { q: "Dòng điện nào sau đây KHÔNG đi qua được lớp điện môi của tụ?", a: ["Dòng một chiều không đổi.", "Dòng xoay chiều.", "Dòng cao tần.", "Dòng biến thiên."], c: 0, exp: "Lớp điện môi cách điện nên ngăn dòng một chiều đi qua.", hint: "Tụ ngăn dòng DC." },
-                { q: "Bộ tụ gồm 2 tụ $4 \\mu F$ ghép nối tiếp có điện dung bộ là", a: ["$2 \\mu F$.", "$8 \\mu F$.", "$4 \\mu F$.", "$1 \\mu F$."], c: 0, exp: "$1/C_b = 1/C_1 + 1/C_2 = 1/4 + 1/4 = 1/2$.", hint: "Nối tiếp làm giảm điện dung." },
-                { q: "Hiệu điện thế $U = 10 V$, tụ $C = 20 \\mu F$. Điện tích $Q$ là", a: ["$0,2 mC$.", "$2 mC$.", "$0,02 mC$.", "$200 \\mu C$."], c: 0, exp: "$Q = CU = 20.10^{-6} \\times 10 = 2.10^{-4} C = 0,2 mC$.", hint: "Nhân C với U." },
-                { q: "Khi $d$ giảm 2 lần thì $C$ của tụ phẳng sẽ", a: ["tăng 2 lần.", "giảm 2 lần.", "tăng 4 lần.", "không đổi."], c: 0, exp: "C tỉ lệ nghịch với d.", hint: "Khoảng cách gần hơn tích điện tốt hơn." },
-                { q: "Đơn vị nanofara (nF) so với microfara ($\\mu F$) thì", a: ["nhỏ hơn 1000 lần.", "lớn hơn 1000 lần.", "nhỏ hơn 100 lần.", "lớn hơn 10 lần."], c: 0, exp: "$1 \\mu F = 10^3 nF$.", hint: "Nano là $10^{-9}$, micro là $10^{-6}$." },
-                { q: "Đồ thị $Q(U)$ của tụ điện là một", a: ["đường thẳng qua gốc tọa độ.", "đường hyperbol.", "đường parabol.", "đường tròn."], c: 0, exp: "Mối quan hệ tuyến tính $Q = CU$.", hint: "Hàm bậc nhất." }
+                { q: "Kí hiệu của tụ điện trong sơ đồ mạch điện là", a: ["Hai vạch song song bằng nhau.", "Vạch dài vạch ngắn.", "Vòng tròn có X.", "Ziczac."], c: 0, exp: "Hai vạch song song có độ dài bằng nhau đại diện cho hai bản cực phẳng.", hint: "Mô tả cấu tạo tụ phẳng." },
+                { q: "Đơn vị $1 \\mu F$ bằng bao nhiêu Fara?", a: ["$10^{-6} F$.", "$10^{-9} F$.", "$10^{-3} F$.", "$10^{-12} F$."], c: 0, exp: "Tiền tố micro ($\mu$) có nghĩa là $10^{-6}$.", hint: "Một phần triệu." },
+                { q: "Trên tụ ghi $20 \\mu F - 200 V$. Giá trị $200 V$ cho biết", a: ["Hiệu điện thế tối đa.", "Hiệu điện thế trung bình.", "Suất điện động.", "Hiệu điện thế hiệu dụng."], c: 0, exp: "Giá trị hiệu điện thế tối đa để không đánh thủng điện môi.", hint: "Giới hạn an toàn." },
+                { q: "Điện dung của tụ điện phẳng phụ thuộc vào", a: ["Khoảng cách giữa hai bản.", "Điện tích của tụ.", "Hiệu điện thế nguồn.", "Chất liệu làm bản cực."], c: 0, exp: "C tỉ lệ nghịch với khoảng cách $d$.", hint: "Cấu trúc hình học của tụ." },
+                { q: "Công thức tính năng lượng tích trữ trong tụ điện là", a: ["$W = 1/2 CU^2$.", "$W = CU^2$.", "$W = 1/2 QU^2$.", "$W = 1/2 C^2U$."], c: 0, exp: "Năng lượng điện trường tỉ lệ với bình phương hiệu điện thế.", hint: "Giống công thức động năng." },
+                { q: "Khi tăng hiệu điện thế U giữa 2 bản tụ lên 2 lần thì điện dung C của tụ sẽ", a: ["không đổi.", "tăng 2 lần.", "giảm 2 lần.", "tăng 4 lần."], c: 0, exp: "C chỉ phụ thuộc cấu tạo, không phụ thuộc U và Q.", hint: "C là hằng số cấu tạo." },
+                { q: "Ghép song song 2 tụ $C_1 = 2 \\mu F$ và $C_2 = 3 \\mu F$ được bộ tụ", a: ["$5 \\mu F$.", "$1,2 \\mu F$.", "$1 \\mu F$.", "$6 \\mu F$."], c: 0, exp: "Ghép song song: $C_b = C_1 + C_2$.", hint: "Song song là cộng C." },
+                { q: "Thiết bị nào sau đây KHÔNG dùng tụ điện?", a: ["Bàn là điện.", "Mạch lọc nguồn.", "Đèn flash máy ảnh.", "Máy thu thanh."], c: 0, exp: "Bàn là chỉ dùng điện trở tỏa nhiệt.", hint: "Tụ dùng để tích và phóng năng lượng." },
+                { q: "Đơn vị hằng số điện môi $\\varepsilon$ là", a: ["không có đơn vị.", "Fara.", "Culông.", "Vôn."], c: 0, exp: "Hằng số điện môi là một tỉ số không thứ nguyên.", hint: "Nó là một hệ số so sánh." },
+                { q: "Để tích điện cho tụ ta nối nó với", a: ["Nguồn điện.", "Sợi dây dẫn.", "Vật nhiễm điện.", "Vật cách điện."], c: 0, exp: "Cần hiệu điện thế để tách điện tích.", hint: "Cần lực đẩy electron." },
+                { q: "Khi khoảng cách d giảm 2 lần thì điện dung C của tụ phẳng", a: ["Tăng 2 lần.", "Giảm 2 lần.", "Tăng 4 lần.", "Không đổi."], c: 0, exp: "C tỉ lệ nghịch với d.", hint: "Càng gần hút điện càng mạnh." },
+                { q: "Đồ thị biểu diễn mối liên hệ $Q(U)$ của tụ điện là", a: ["Đường thẳng qua gốc tọa độ.", "Đường parabol.", "Đường hyperbol.", "Đường tròn."], c: 0, exp: "Q = CU là hàm bậc nhất.", hint: "Q tỉ lệ thuận U." },
+                { q: "Hai bản tụ điện phẳng khi tích điện thì tích điện", a: ["Trái dấu, cùng độ lớn.", "Cùng dấu, cùng độ lớn.", "Trái dấu, khác độ lớn.", "Cùng dấu, khác độ lớn."], c: 0, exp: "Do cảm ứng, hai bản luôn trái dấu cùng độ lớn.", hint: "Tổng điện tích bộ bằng 0." },
+                { q: "Tụ điện ngăn dòng điện nào?", a: ["Dòng một chiều không đổi.", "Dòng xoay chiều.", "Dòng cao tần.", "Dòng biến thiên."], c: 0, exp: "Điện môi cách điện ngăn dòng 1 chiều.", hint: "Tụ ngăn DC." },
+                { q: "Bộ tụ gồm 2 tụ $4 \\mu F$ ghép nối tiếp có điện dung là", a: ["$2 \\mu F$.", "$8 \\mu F$.", "$4 \\mu F$.", "$1 \\mu F$."], c: 0, exp: "Ghép nối tiếp làm giảm điện dung.", hint: "Dùng công thức nghịch đảo." },
+                { q: "Khi $U = 10 V$, $C = 20 \\mu F$ thì điện tích $Q$ là", a: ["$0,2 mC$.", "$2 mC$.", "$0,02 mC$.", "$200 \\mu C$."], c: 0, exp: "$Q = CU = 200.10^{-6} C = 0,2 mC$.", hint: "Tính tích C nhân U." },
+                { q: "Hành động nào làm tăng năng lượng tích trữ của tụ?", a: ["Tăng hiệu điện thế U.", "Rút tụ khỏi nguồn.", "Giảm C.", "Tăng khoảng cách d."], c: 0, exp: "W tỉ lệ thuận với bình phương U.", hint: "Nhìn vào công thức năng lượng." },
+                { q: "Đơn vị nanofara (nF) so với microfara ($\\mu F$) thì", a: ["nhỏ hơn 1000 lần.", "lớn hơn 1000 lần.", "nhỏ hơn 100 lần.", "lớn hơn 10 lần."], c: 0, exp: "$1 \\mu F = 1000 nF$.", hint: "Nano là mũ -9, micro là mũ -6." },
+                { q: "Đặc điểm điện trường trong lòng tụ phẳng là", a: ["Điện trường đều.", "Điện trường xoáy.", "Điện trường biến thiên.", "Điện trường không đều."], c: 0, exp: "Giữa 2 bản phẳng song song là điện trường đều.", hint: "Đường sức song song cách đều." },
+                { q: "Công thức tính điện dung tụ phẳng là", a: ["$C = \\varepsilon S / (k 4\\pi d)$.", "$C = U/Q$.", "$C = d/S$.", "$C = \\varepsilon d / S$."], c: 0, exp: "Công thức giải tích cấu tạo tụ.", hint: "Phụ thuộc S, d và điện môi." }
             ],
             tf: [
                 {
                     lead: "Một tụ điện phẳng có điện môi không khí, được nối vào nguồn điện hiệu điện thế U.",
                     items: [
-                        { text: "Nếu đưa tấm thủy tinh ($\\varepsilon > 1$) vào giữa hai bản, điện dung của tụ sẽ tăng.", c: true, exp: "$C$ tỉ lệ thuận với $\\varepsilon$." },
-                        { text: "Điện tích của tụ điện tỉ lệ thuận với điện dung $C$.", c: true, exp: "$Q = CU$." },
-                        { text: "Nếu rút tụ ra khỏi nguồn, điện thế giữa hai bản tụ sẽ ngay lập tức về 0.", c: false, exp: "Tụ vẫn giữ điện tích nên vẫn có hiệu điện thế cho đến khi phóng điện." },
-                        { text: "Năng lượng điện trường tỉ lệ với bình phương điện dung của tụ.", c: false, exp: "$W = 0,5 CU^2$ (tỉ lệ bậc nhất với C)." }
+                        { text: "Nếu đưa tấm thủy tinh ($\\varepsilon > 1$) vào giữa hai bản, điện dung tụ sẽ tăng.", c: true, exp: "Đúng, vì điện dung tỉ lệ thuận với $\\varepsilon$." },
+                        { text: "Điện tích của tụ tỉ lệ thuận với điện dung C.", c: true, exp: "Đúng, $Q = CU$." },
+                        { text: "Nếu rút tụ ra khỏi nguồn, hiệu điện thế giữa hai bản sẽ ngay lập tức về 0.", c: false, exp: "Sai, tụ vẫn giữ điện tích nên vẫn duy trì hiệu điện thế." },
+                        { text: "Năng lượng điện trường tỉ lệ với hiệu điện thế U.", c: false, exp: "Sai, năng lượng tỉ lệ với bình phương của U." }
                     ],
-                    hint: "Liên hệ các yếu tố cấu tạo và năng lượng."
+                    hint: "Liên hệ cấu tạo và tính chất nạp/xả."
                 },
                 {
                     lead: "Trên vỏ tụ điện ghi $100 \\mu F - 16 V$.",
                     items: [
-                        { text: "Điện dung của tụ điện này là $100 \\mu F$.", c: true, exp: "Thông số ghi trên vỏ là giá trị định mức." },
-                        { text: "Tụ điện có thể làm việc an toàn ở hiệu điện thế $25 V$.", c: false, exp: "Vượt quá $16 V$ tụ sẽ bị đánh thủng." },
-                        { text: "Điện tích cực đại tụ tích được là $1,6 mC$.", c: true, exp: "$Q = 100.10^{-6} \\times 16 = 1,6.10^{-3} C$." },
-                        { text: "Năng lượng tối đa tích được là $12,8 mJ$.", c: true, exp: "$W = 0,5 \times 100.10^{-6} \times 16^2 = 0,0128 J$." }
+                        { text: "Điện dung định mức của tụ là $100 \\mu F$.", c: true, exp: "Đúng, đây là thông số kỹ thuật ghi trên vỏ." },
+                        { text: "Tụ có thể hoạt động an toàn ở điện áp $25 V$.", c: false, exp: "Sai, quá áp $16 V$ sẽ làm đánh thủng tụ." },
+                        { text: "Điện tích tối đa tụ tích được là $1,6 mC$.", c: true, exp: "Đúng, $Q = 100.10^{-6} \\times 16 = 1,6 mC$." },
+                        { text: "Năng lượng tối đa tích trữ là $12,8 mJ$.", c: true, exp: "Đúng, $W = 0,5 \\times 100.10^{-6} \\times 16^2 = 12,8 mJ$." }
                     ],
-                    hint: "Các thông số ghi trên vỏ là định mức hoạt động."
+                    hint: "Các thông số vỏ tụ là giới hạn định mức."
                 },
                 {
-                    lead: "Xét các đặc điểm của tụ điện phẳng.",
+                    lead: "Xét tụ điện phẳng trong môi trường dầu hỏa.",
                     items: [
-                        { text: "Hai bản tụ điện luôn tích điện trái dấu và cùng độ lớn.", c: true, exp: "Do hiện tượng cảm ứng giữa hai vật dẫn." },
-                        { text: "Điện trường giữa hai bản tụ phẳng là điện trường xoáy.", c: false, exp: "Giữa hai bản là điện trường đều." },
-                        { text: "Hằng số điện môi của chân không bằng 1.", c: true, exp: "Chân không có khả năng cách điện làm mốc so sánh." },
-                        { text: "Năng lượng tụ điện biến thành nhiệt năng khi tụ đang nạp điện.", c: false, exp: "Đang nạp là biến năng lượng nguồn thành năng lượng điện trường." }
+                        { text: "Hằng số điện môi của dầu hỏa luôn lớn hơn 1.", c: true, exp: "Đúng, mọi môi trường vật chất đều có $\\varepsilon > 1$." },
+                        { text: "Khi rút tụ khỏi dầu, điện dung của tụ sẽ tăng lên.", c: false, exp: "Sai, ra không khí $\\varepsilon$ giảm nên C giảm." },
+                        { text: "Hai bản tụ tích điện trái dấu nhưng có độ lớn khác nhau.", c: false, exp: "Sai, hai bản luôn tích điện cùng độ lớn." },
+                        { text: "Điện trường trong lòng tụ là điện trường đều.", c: true, exp: "Đúng, đặc điểm của tụ phẳng." }
                     ],
-                    hint: "Kiểm tra kiến thức về tính chất điện trường và môi trường."
+                    hint: "Hằng số điện môi ảnh hưởng trực tiếp đến C."
                 },
                 {
                     lead: "Ghép tụ điện nối tiếp và song song.",
                     items: [
-                        { text: "Ghép song song để tăng điện dung cho bộ tụ.", c: true, exp: "$C_p = C_1 + C_2$." },
-                        { text: "Ghép nối tiếp thì điện tích trên mỗi tụ là bằng nhau.", c: true, exp: "Hệ quả của bảo toàn điện tích trong mạch nối tiếp." },
-                        { text: "Điện dung bộ tụ ghép nối tiếp luôn lớn hơn điện dung thành phần nhỏ nhất.", c: false, exp: "Nghịch đảo tổng làm điện dung bộ nhỏ đi." },
-                        { text: "Ghép nối tiếp giúp tăng khả năng chịu đựng hiệu điện thế cho bộ tụ.", c: true, exp: "Hiệu điện thế nguồn chia ra cho các tụ thành phần." }
+                        { text: "Ghép song song để tăng điện dung của cả bộ.", c: true, exp: "Đúng, $C_p = C_1 + C_2$." },
+                        { text: "Ghép nối tiếp thì hiệu điện thế các tụ bằng nhau.", c: false, exp: "Sai, hiệu điện thế chia theo tỉ lệ nghịch điện dung." },
+                        { text: "Ghép nối tiếp làm giảm điện dung của bộ tụ.", c: true, exp: "Đúng, điện dung bộ nhỏ hơn mọi tụ thành phần." },
+                        { text: "Ghép song song cho phép chịu áp cao hơn.", c: false, exp: "Sai, nối tiếp mới tăng khả năng chịu áp." }
                     ],
-                    hint: "Phân biệt đặc điểm $Q, U, C$ trong hai cách ghép."
+                    hint: "Quy tắc cộng dồn trong ghép tụ."
                 }
             ],
             short: [
-                { q: "Tụ điện $C = 10 \\mu F$ được tích điện dưới hiệu điện thế $20 V$. Tính điện tích $Q$ của tụ (đơn vị mC, làm tròn 1 chữ số thập phân)?", a: "0,2", exp: "$Q = CU = 10.10^{-6} \\times 20 = 2.10^{-4} C = 0,2 mC$.", hint: "Tính $Q = C \cdot U$ và đổi sang mC." },
-                { q: "Tính năng lượng (mJ) tích trữ của tụ $C = 40 \\mu F$ khi hiệu điện thế là $10 V$?", a: "2", exp: "$W = 0,5 CU^2 = 0,5 \\times 40.10^{-6} \\times 100 = 2.10^{-3} J = 2 mJ$.", hint: "Sử dụng công thức $W = 0,5 CU^2$." },
-                { q: "Một tụ phẳng có điện dung $2 pF$ trong không khí. Nếu đưa điện môi $\\varepsilon = 2,5$ vào giữa thì điện dung mới là bao nhiêu pF?", a: "5", exp: "$C = \\varepsilon C_0 = 2,5 \\times 2 = 5 pF$.", hint: "Điện dung tăng tỉ lệ với hằng số điện môi." },
-                { q: "Nhóm học sinh nhận định về tụ điện:\n1. 'Đơn vị là Fara'.\n2. 'Ngăn dòng một chiều'.\n3. 'Tích năng lượng từ trường'.\n4. 'C tỉ lệ thuận với d'.\n5. 'Q tỉ lệ thuận với U'.\n6. 'MicroFara bằng một phần triệu Fara'.\n7. 'Năng lượng là $CU$'.\n8. 'Ghép song song làm giảm C'.\nChọn các câu ĐÚNG rồi ghi dãy số tăng dần.", a: "1256", exp: "Đúng: 1 (Fara), 2 (ngăn DC), 5 ($Q=CU$), 6 (đổi đơn vị). Sai: 3 (điện trường), 4 (nghịch d), 7 ($1/2 CU^2$), 8 (tăng C).", hint: "Rà soát định nghĩa, đơn vị và tính chất vật lí." }
+                { q: "Tụ điện $C = 10 \\mu F$ tích điện dưới $U = 20 V$. Tính điện tích $Q$ của tụ (đơn vị mC, làm tròn 1 chữ số)?", a: "0,2", exp: "$Q = CU = 200 \\mu C = 0,2 mC$.", hint: "Tính tích $C \cdot U$ rồi đổi đơn vị." },
+                { q: "Tính năng lượng (mJ) của tụ $C = 50 \\mu F$ khi hiệu điện thế giữa hai bản là $10 V$?", a: "2,5", exp: "$W = 0,5 CU^2 = 0,5 \\times 50.10^{-6} \\times 100 = 2,5 mJ$.", hint: "Sử dụng $W = 0,5 CU^2$." },
+                { q: "Một tụ phẳng không khí $2 pF$. Nhúng vào điện môi $\\varepsilon = 4$ thì điện dung mới là bao nhiêu pF?", a: "8", exp: "$C = \\varepsilon C_0 = 4 \\times 2 = 8 pF$.", hint: "Điện dung tăng gấp $\\varepsilon$ lần." },
+                { q: "Xét nhận định:\n1. 'Fara là đơn vị C'.\n2. 'Tụ ngăn DC'.\n3. 'Tụ tích từ trường'.\n4. 'C tỉ lệ thuận d'.\n5. 'Q tỉ lệ thuận U'.\n6. '$\mu F = 10^{-6} F$'.\n7. 'Năng lượng là $QU$'.\n8. 'Ghép song song tăng C'.\nChọn câu ĐÚNG ghi dãy số tăng dần.", a: "1256", exp: "Đúng: 1, 2, 5, 6. Sai: 3 (điện trường), 4 (nghịch d), 7 ($1/2 QU$), 8 (giảm).", hint: "Rà soát định nghĩa và đơn vị Vật lí." }
             ]
         };
 
@@ -291,12 +293,12 @@
             history: [],
             isGameOver: false,
             tempSelections: [],
-            gameMode: 'practice' // 'practice' or 'official'
+            gameMode: 'practice'
         };
 
         function renderMath() {
             if (window.MathJax && window.MathJax.typesetPromise) {
-                window.MathJax.typesetPromise();
+                window.MathJax.typesetPromise().catch(e => {});
             }
         }
 
@@ -312,18 +314,14 @@
             } catch(e) {}
         };
 
-        // Anti-cheat Listeners
         function setupAntiCheat() {
-            const checkLeave = () => {
-                if (gameState.gameMode === 'official' && !gameState.isGameOver && document.hidden) {
-                    violationDetected();
-                }
+            const check = () => {
+                if (gameState.gameMode === 'official' && !gameState.isGameOver && document.hidden) violationDetected();
             };
-            document.addEventListener('visibilitychange', checkLeave);
+            document.addEventListener('visibilitychange', check);
             window.onblur = () => {
                 if (gameState.gameMode === 'official' && !gameState.isGameOver) {
-                    // Small delay to prevent issues with minor clicks outside iframe
-                    setTimeout(() => { if (!document.hasFocus()) violationDetected(); }, 1000);
+                    setTimeout(() => { if (!document.hasFocus()) violationDetected(); }, 1200);
                 }
             };
         }
@@ -337,12 +335,7 @@
             document.getElementById('screen-result').classList.remove('hidden-screen');
             document.getElementById('result-title').innerText = "KẾT THÚC VÌ VI PHẠM";
             document.getElementById('result-title').className = "text-4xl font-bold text-red-500 mb-4 uppercase";
-            document.getElementById('result-text').innerHTML = `
-                Thí sinh: <strong>${gameState.user.name}</strong><br>
-                <span class="text-red-400 font-bold block mt-4 p-4 border-2 border-red-500 rounded-xl bg-red-50">
-                    Bạn đã vi phạm quy chế, không được rời khỏi màn hình này khi đang NGỒI GHẾ NÓNG
-                </span>
-            `;
+            document.getElementById('result-text').innerHTML = `<span class="text-red-400 font-bold block p-4 border-2 border-red-500 rounded-xl bg-red-50">Bạn đã vi phạm quy chế, không được rời khỏi màn hình này khi đang NGỒI GHẾ NÓNG</span>`;
             document.getElementById('btn-history').classList.add('hidden');
         }
 
@@ -377,18 +370,18 @@
         function startGame(mode) {
             const name = document.getElementById('input-name').value;
             const sbd = document.getElementById('input-sbd').value;
-            if (!name || !sbd) return alert("Vui lòng nhập Họ tên và SBD!");
+            const cls = document.getElementById('input-class').value;
+            const sch = document.getElementById('input-school').value;
+            if (!name || !sbd) return alert("Vui lòng nhập đầy đủ thông tin!");
             
-            gameState.user = { name, sbd, class: document.getElementById('input-class').value, school: document.getElementById('input-school').value };
+            gameState.user = { name, sbd, class: cls, school: sch };
             localStorage.setItem('altp_user', JSON.stringify(gameState.user));
-            
             gameState.gameMode = mode;
             gameState.currentLevel = 0;
             gameState.isGameOver = false;
             gameState.history = [];
             gameState.lifelines = { 5050: true, audience: true, phone: true };
             
-            // Build Question List: 12 MCQ -> 4 TF -> 4 Short
             const mcqs = [...questionBank.mcq].sort(() => 0.5 - Math.random()).slice(0, 12).map(q => ({...q, type:'mcq'}));
             const tfs = [...questionBank.tf].sort(() => 0.5 - Math.random()).slice(0, 4).map(q => ({...q, type:'tf'}));
             const shorts = [...questionBank.short].sort(() => 0.5 - Math.random()).slice(0, 4).map(q => ({...q, type:'short'}));
@@ -400,7 +393,7 @@
             document.getElementById('screen-game').classList.remove('hidden-screen');
             document.getElementById('screen-result').classList.add('hidden-screen');
             document.getElementById('btn-history').classList.remove('hidden');
-            document.getElementById('result-title').className = "text-4xl font-bold text-yellow-400 mb-4 uppercase";
+            document.getElementById('result-title').className = "text-4xl font-bold text-yellow-400 mb-6 uppercase";
             document.getElementById('result-title').innerText = "KẾT QUẢ";
 
             const badge = document.getElementById('display-mode');
@@ -413,9 +406,7 @@
 
         function loadQuestion() {
             clearInterval(gameState.timerInterval);
-            gameState.timer = 180;
-            updateTimerUI();
-            startTimer();
+            gameState.timer = 180; updateTimerUI(); startTimer();
 
             const q = gameState.questions[gameState.currentLevel];
             document.getElementById('question-text').innerHTML = `Câu ${gameState.currentLevel + 1}: ${q.type === 'tf' ? q.lead : q.q}`;
@@ -446,16 +437,14 @@
                 gameState.tempSelections = [null, null, null, null];
                 q.items.forEach((it, idx) => {
                     const row = document.createElement('div');
-                    row.className = "flex justify-between items-center bg-black/20 p-2 rounded mb-2 border border-blue-500/20";
-                    row.innerHTML = `<div class='pr-4 text-sm'>${String.fromCharCode(97+idx)}) ${it.text}</div><div class='flex gap-2 shrink-0'><button id='t-${idx}' class='px-3 py-1 bg-gray-500 rounded text-xs transition uppercase font-bold'>Đúng</button><button id='f-${idx}' class='px-3 py-1 bg-gray-500 rounded text-xs transition uppercase font-bold'>Sai</button></div>`;
+                    row.className = "flex justify-between items-center bg-black/20 p-3 rounded mb-2 border border-blue-500/20";
+                    row.innerHTML = `<div class='pr-4 text-sm'>${String.fromCharCode(97+idx)}) ${it.text}</div><div class='flex gap-2 shrink-0'><button id='t-${idx}' class='px-4 py-1 bg-gray-500 rounded text-xs font-bold uppercase'>Đúng</button><button id='f-${idx}' class='px-4 py-1 bg-gray-500 rounded text-xs font-bold uppercase'>Sai</button></div>`;
                     tf.appendChild(row);
-                    row.querySelector(`#t-${idx}`).onclick = () => { playSound('pingpong'); gameState.tempSelections[idx] = true; row.querySelector(`#t-${idx}`).className = 'px-3 py-1 bg-green-600 rounded text-xs uppercase font-bold'; row.querySelector(`#f-${idx}`).className = 'px-3 py-1 bg-gray-500 rounded text-xs uppercase font-bold'; };
-                    row.querySelector(`#f-${idx}`).onclick = () => { playSound('pingpong'); gameState.tempSelections[idx] = false; row.querySelector(`#t-${idx}`).className = 'px-3 py-1 bg-gray-500 rounded text-xs uppercase font-bold'; row.querySelector(`#f-${idx}`).className = 'px-3 py-1 bg-red-600 rounded text-xs uppercase font-bold'; };
+                    row.querySelector(`#t-${idx}`).onclick = () => { playSound('pingpong'); gameState.tempSelections[idx] = true; row.querySelector(`#t-${idx}`).className = 'px-4 py-1 bg-green-600 rounded text-xs font-bold uppercase'; row.querySelector(`#f-${idx}`).className = 'px-4 py-1 bg-gray-500 rounded text-xs font-bold uppercase'; };
+                    row.querySelector(`#f-${idx}`).onclick = () => { playSound('pingpong'); gameState.tempSelections[idx] = false; row.querySelector(`#t-${idx}`).className = 'px-4 py-1 bg-gray-500 rounded text-xs font-bold uppercase'; row.querySelector(`#f-${idx}`).className = 'px-4 py-1 bg-red-600 rounded text-xs font-bold uppercase'; };
                 });
             } else {
-                sh.classList.remove('hidden');
-                document.getElementById('short-input').value = '';
-                document.getElementById('short-input').focus();
+                sh.classList.remove('hidden'); document.getElementById('short-input').value = ''; document.getElementById('short-input').focus();
             }
 
             document.getElementById('life-5050').style.display = (q.type === 'mcq' && gameState.lifelines['5050']) ? 'block' : 'none';
@@ -477,14 +466,14 @@
                 cA = String.fromCharCode(65 + q.shuffled.findIndex(x => x.i === q.c));
                 details = { shuffled: q.shuffled, originalCorrect: q.c, userIdx: gameState.selectedIdx };
             } else if (q.type === 'tf') {
-                if (gameState.tempSelections.includes(null)) return alert("Vui lòng chọn đầy đủ Đúng/Sai!");
+                if (gameState.tempSelections.includes(null)) return alert("Vui lòng chọn đủ 4 ý!");
                 correct = gameState.tempSelections.every((v, i) => v === q.items[i].c);
                 uA = gameState.tempSelections.map(v => v ? "Đúng" : "Sai").join("|");
                 cA = q.items.map(v => v.c ? "Đúng" : "Sai").join("|");
                 details = { selections: [...gameState.tempSelections], items: q.items };
             } else {
                 uA = document.getElementById('short-input').value.trim().replace('.', ',');
-                if(!uA) return alert("Vui lòng nhập đáp án!");
+                if(!uA) return alert("Nhập đáp án!");
                 correct = uA === q.a; cA = q.a;
             }
 
@@ -497,32 +486,28 @@
             if (correct) {
                 playSound('correct');
                 if (gameState.currentLevel === 4) {
-                    showModal("VƯỢT QUA CÂU SỐ 5!", "Chúc mừng Bạn đã vượt qua câu số 5, đạt 5đ. Từ câu 6 trở đi, bạn có thể chọn dừng cuộc chơi để bảo toàn số điểm, nếu trả lời không đúng từ câu 6 đến 10, sẽ quay về mốc 5 điểm. Tiếp tục?", "Tiếp tục", next, 5);
+                    showModal("VƯỢT QUA MỐC 5 CÂU!", "Chúc mừng Bạn đã vượt qua câu số 5, đạt 5đ. Từ câu 6 trở đi, bạn có thể chọn dừng cuộc chơi để bảo toàn số điểm, nếu trả lời không đúng từ câu 6 đến 10, sẽ quay về mốc 5 điểm. Tiếp tục?", "Tiếp tục", next, 5);
                 } else if (gameState.currentLevel === 9) {
-                    showModal("VƯỢT QUA CÂU SỐ 10!", "Chúc mừng Bạn đã vượt qua câu số 10, đạt 7đ. Từ câu 11 trở đi, bạn có thể chọn dừng cuộc chơi để bảo toàn số điểm, nếu trả lời không đúng sẽ quay về mốc 7 điểm. Tiếp tục?", "Tiếp tục", next, 10);
-                } else if (gameState.currentLevel === 19) {
-                    end(true);
-                } else {
-                    next();
-                }
+                    showModal("VƯỢT QUA MỐC 10 CÂU!", "Chúc mừng Bạn đã vượt qua câu số 10, đạt 7đ. Từ câu 11 trở đi, bạn có thể chọn dừng cuộc chơi để bảo toàn số điểm, nếu trả lời không đúng sẽ quay về mốc 7 điểm. Tiếp tục?", "Tiếp tục", next, 10);
+                } else if (gameState.currentLevel === 19) end(true);
+                else next();
             } else {
-                playSound('wrong');
-                end(false);
+                playSound('wrong'); end(false);
             }
         }
 
         function next() { gameState.currentLevel++; gameState.selectedIdx = undefined; loadQuestion(); }
 
         function end(win, manual = false) {
-            gameState.isGameOver = true;
-            clearInterval(gameState.timerInterval);
+            gameState.isGameOver = true; clearInterval(gameState.timerInterval);
             let score = manual ? pointsConfig[gameState.currentLevel - 1] : (win ? 10 : (gameState.currentLevel < 5 ? 0 : (gameState.currentLevel < 10 ? 5 : 7)));
+            const rank = score >= 9 ? "Xuất sắc" : (score >= 8 ? "Giỏi" : (score >= 6.5 ? "Khá" : (score >= 5 ? "Trung bình" : "Cần cố gắng")));
+            
             document.getElementById('screen-game').classList.add('hidden-screen');
             document.getElementById('screen-result').classList.remove('hidden-screen');
             document.getElementById('result-text').innerHTML = `
-                Thí sinh: <strong>${gameState.user.name}</strong><br>
-                Chế độ: <strong>${gameState.gameMode === 'official' ? 'Ghế Nóng' : 'Luyện Tập'}</strong><br>
-                Điểm cuối cùng: <span class='text-4xl font-bold text-yellow-400'>${score.toFixed(1)}</span>
+                Chúc mừng <strong>${gameState.user.name}</strong>, SBD: <strong>${gameState.user.sbd}</strong>, Lớp: <strong>${gameState.user.class}</strong>, Trường: <strong>${gameState.user.school}</strong> đã hoàn thành cuộc thi với số điểm <strong>${score.toFixed(1)}</strong>, xếp loại <strong>${rank}</strong>.<br>
+                <span class="italic text-yellow-400 mt-4 block">Có thể làm lại để khẳng định đẳng cấp!</span>
             `;
             if (score >= 5) startFireworks();
         }
@@ -537,30 +522,19 @@
             if (type === '5050') {
                 const wr = q.shuffled.filter(x => x.i !== q.c).sort(() => 0.5 - Math.random()).slice(0, 2);
                 document.querySelectorAll('.btn-answer').forEach(b => { wr.forEach(w => { if(b.innerText.includes(w.t)) b.style.visibility = 'hidden'; })});
-                hint.innerText = "Hệ thống đã loại bỏ 2 phương án sai cho bạn.";
+                hint.innerText = "Hệ thống đã loại bỏ 2 phương án sai.";
             } else if (type === 'audience') {
                 if (q.type === 'mcq') {
                     let v = [10, 10, 10, 10]; const cIdx = q.shuffled.findIndex(x => x.i === q.c); v[cIdx] = 70;
-                    hint.innerText = `Khán giả bình chọn: A:${v[0]}% B:${v[1]}% C:${v[2]}% D:${v[3]}% (Phần lớn đang chọn đáp án có tỉ lệ cao nhất)`;
-                } else hint.innerHTML = `Khán giả gợi ý kiến thức: <em>${q.hint}</em>`;
-            } else hint.innerHTML = `Chuyên gia tư vấn: "Kiến thức câu này nằm ở phần <strong>${q.hint}</strong>. Chúc bạn may mắn!"`;
+                    hint.innerText = `Khán giả chọn: A:${v[0]}% B:${v[1]}% C:${v[2]}% D:${v[3]}%`;
+                } else hint.innerHTML = `Gợi ý khán giả: <em>${q.hint}</em>`;
+            } else hint.innerHTML = `Người thân gợi ý: "Mình nghĩ kiến thức là: <strong>${q.hint}</strong>"`;
             renderMath();
         }
 
         function showRules() { playSound('pingpong'); document.getElementById('screen-login').classList.add('hidden-screen'); document.getElementById('screen-rules').classList.remove('hidden-screen'); }
         function backToHome() { playSound('pingpong'); document.getElementById('screen-rules').classList.add('hidden-screen'); document.getElementById('screen-login').classList.remove('hidden-screen'); }
-        
-        function showModal(t, b, btn, cb, level) { 
-            const card = document.getElementById('modal-card');
-            card.className = "milestone-card " + (level === 5 ? "level-5" : "level-10");
-            document.getElementById('modal-title').innerText = t; 
-            document.getElementById('modal-body').innerText = b; 
-            document.getElementById('modal-btn').innerText = btn; 
-            document.getElementById('global-modal').classList.remove('hidden'); 
-            window.modalCb = cb; 
-            renderMath();
-        }
-
+        function showModal(t, b, btn, cb, level) { const card = document.getElementById('modal-card'); card.className = "milestone-card " + (level === 5 ? "level-5" : "level-10"); document.getElementById('modal-title').innerText = t; document.getElementById('modal-body').innerText = b; document.getElementById('modal-btn').innerText = btn; document.getElementById('global-modal').classList.remove('hidden'); window.modalCb = cb; renderMath(); }
         function closeModal() { document.getElementById('global-modal').classList.add('hidden'); if(window.modalCb) window.modalCb(); }
         function startTimer() { gameState.timerInterval = setInterval(() => { gameState.timer--; updateTimerUI(); if(gameState.timer <= 0) { clearInterval(gameState.timerInterval); end(false); } }, 1000); }
         function updateTimerUI() { const t = document.getElementById('timer'); t.innerText = `${gameState.timer}s`; t.className = gameState.timer <= 10 ? "text-xl font-bold timer-warning" : "text-xl font-bold text-yellow-400"; }
@@ -571,43 +545,31 @@
         function showHistory() {
             const cont = document.getElementById('history-content'); cont.innerHTML = '';
             gameState.history.forEach((h, i) => {
-                const d = document.createElement('div');
-                d.className = `p-6 rounded-2xl bg-gray-50 text-gray-900 shadow-sm border-l-8 ${h.isCorrect ? 'border-green-500' : 'border-red-500'}`;
-                
-                let answerHtml = "";
+                const d = document.createElement('div'); d.className = `p-6 rounded-2xl bg-gray-50 text-gray-900 shadow-sm border-l-8 ${h.isCorrect ? 'border-green-500' : 'border-red-500'}`;
+                let ansH = "";
                 if (h.type === 'mcq') {
-                    answerHtml = `<div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">`;
+                    ansH = `<div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">`;
                     h.details.shuffled.forEach((opt, idx) => {
-                        const label = String.fromCharCode(65 + idx);
-                        const isUserChoice = (idx === h.details.userIdx);
-                        const isCorrectOpt = (opt.i === h.details.originalCorrect);
-                        let styleClass = "border p-3 rounded-xl flex items-center justify-between ";
-                        if (isUserChoice) styleClass += h.isCorrect ? "bg-green-100 border-green-600 text-green-800 font-bold" : "bg-red-100 border-red-600 text-red-800 font-bold";
-                        else if (isCorrectOpt) styleClass += "bg-green-50 border-green-400 text-green-700 font-bold";
-                        else styleClass += "bg-white border-gray-200 text-gray-500 opacity-60";
-                        answerHtml += `<div class="${styleClass}"><span>${label}. ${opt.t}</span> ${isUserChoice ? (h.isCorrect ? '✅' : '❌') : (isCorrectOpt ? '⭐' : '')}</div>`;
+                        const isU = (idx === h.details.userIdx), isC = (opt.i === h.details.originalCorrect);
+                        let sC = "border p-3 rounded-xl flex justify-between ";
+                        if (isU) sC += h.isCorrect ? "bg-green-100 border-green-600 font-bold" : "bg-red-100 border-red-600 font-bold";
+                        else if (isC) sC += "bg-green-50 border-green-400 font-bold"; else sC += "bg-white border-gray-200 opacity-60";
+                        ansH += `<div class="${sC}"><span>${String.fromCharCode(65+idx)}. ${opt.t}</span> ${isU?(h.isCorrect?'✅':'❌'):(isC?'⭐':'')}</div>`;
                     });
-                    answerHtml += `</div>`;
+                    ansH += `</div>`;
                 } else if (h.type === 'tf') {
-                    answerHtml = `<div class="mt-4 space-y-2">`;
+                    ansH = `<div class="mt-4 space-y-2">`;
                     h.details.items.forEach((item, idx) => {
-                        const userVal = h.details.selections[idx];
-                        const isItemCorrect = userVal === item.c;
-                        answerHtml += `<div class="p-3 border rounded-xl flex justify-between items-center ${isItemCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}">
-                            <span>${String.fromCharCode(97+idx)}) ${item.text}</span>
-                            <span class="font-bold text-sm">Bạn: ${userVal?'Đ':'S'} | ĐA: ${item.c?'Đ':'S'}</span>
-                        </div>`;
+                        const isR = h.details.selections[idx] === item.c;
+                        ansH += `<div class="p-3 border rounded-xl flex justify-between ${isR?'bg-green-50':'bg-red-50'}"><span>${String.fromCharCode(97+idx)}) ${item.text}</span><span class="text-sm">Bạn: ${h.details.selections[idx]?'Đ':'S'} | ĐA: ${item.c?'Đ':'S'}</span></div>`;
                     });
-                    answerHtml += `</div>`;
-                } else {
-                    answerHtml = `<div class="mt-4 p-4 border rounded-xl bg-white"><p>Kết quả bạn nhập: <span class="${h.isCorrect?'text-green-700':'text-red-700'} font-bold text-xl underline">${h.userAns}</span></p><p class="text-sm mt-1 text-gray-600">Đáp án chính xác: <strong class="text-green-700">${h.correctAns}</strong></p></div>`;
-                }
-                d.innerHTML = `<h4 class="text-xl font-bold mb-2">Câu ${i+1}: ${h.q}</h4>${answerHtml}<div class="mt-4 p-4 bg-blue-50 rounded-xl border-l-4 border-blue-500 text-sm italic text-blue-900 leading-relaxed"><strong>Phân tích giải thuật:</strong> ${h.exp}</div>`;
+                    ansH += `</div>`;
+                } else ansH = `<div class="mt-4 p-4 border rounded-xl bg-white"><p>Bạn nhập: <span class="${h.isCorrect?'text-green-700':'text-red-700'} font-bold underline">${h.userAns}</span></p><p class="text-sm text-gray-600">Đáp án: <strong>${h.correctAns}</strong></p></div>`;
+                
+                d.innerHTML = `<h4 class="text-xl font-bold mb-2">Câu ${i+1}: ${h.q}</h4>${ansH}<div class="mt-4 p-4 bg-blue-50 rounded-xl border-l-4 border-blue-500 text-sm italic"><strong>Phân tích:</strong> ${h.exp}</div>`;
                 cont.appendChild(d);
             });
-            document.getElementById('screen-result').classList.add('hidden-screen'); 
-            document.getElementById('screen-history').classList.remove('hidden-screen');
-            renderMath();
+            document.getElementById('screen-result').classList.add('hidden-screen'); document.getElementById('screen-history').classList.remove('hidden-screen'); renderMath();
         }
 
         function startFireworks() {
@@ -615,8 +577,7 @@
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             let parts = [];
             function animate() {
-                if (!gameState.isGameOver) return;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                if (!gameState.isGameOver) return; ctx.clearRect(0, 0, canvas.width, canvas.height);
                 if (Math.random() < 0.05) {
                     const x = Math.random() * canvas.width, y = Math.random() * canvas.height * 0.5;
                     for(let i=0; i<30; i++) parts.push({x, y, vx:(Math.random()-0.5)*8, vy:(Math.random()-0.5)*8, a:1, c:`hsl(${Math.random()*360}, 100%, 50%)`});
@@ -626,7 +587,6 @@
             }
             animate();
         }
-
         window.onload = init;
     </script>
 </body>
